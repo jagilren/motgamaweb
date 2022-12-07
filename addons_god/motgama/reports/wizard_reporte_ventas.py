@@ -206,6 +206,7 @@ class PDFReporteVentas(models.AbstractModel):
                     val_bool_fac = True
                 else:
                    ultima_factura = doc.fac
+                
 
            
 
@@ -239,7 +240,7 @@ class PDFReporteVentas(models.AbstractModel):
                
             
             
-           
+            
 
 
             if doc.factura.recaudo.estado != 'anulado':
@@ -277,7 +278,8 @@ class PDFReporteVentas(models.AbstractModel):
                 linea_impuesto.tax_id
                     
             
-
+        if ultima_factura == "":
+                    ultima_factura = primer_factura
         total_impuestos_base=0
         valor_impuestos_total = 0
 
@@ -351,8 +353,8 @@ class PDFReporteVentas(models.AbstractModel):
             'total': "{:0,.2f}".format(total).replace(',','¿').replace('.',',').replace('¿','.'),
             'prods': prods,
             'medios': medios,
-            'fecha_inicial': docs[0].fecha_inicial,
-            'fecha_final': docs[0].fecha_final,
+            'fecha_inicial': docs[0].fecha_inicial - timedelta(hours=5),
+            'fecha_final': docs[0].fecha_final  - timedelta(hours=5),
             'doc_inicial': docs[0].doc_inicial,
             'doc_final': docs[0].doc_final,
             'imps': imps

@@ -1025,17 +1025,31 @@ class Validacion(models.TransientModel):
                 _logger.info("LLEGUE AL METODO part 9")
                 # Se inicia el proceso de reducción con la lista de líneas borrables
                 for line in borrables:
-                    line.sudo().write({'invoice_id': False})
-                    factura.sudo().write({'date':factura.date})
+                    no_orphan = False
+                    if line.product_id in [prod_amanecida,prod_ocasional]:
+                         for linea in factura.invoice_line_ids:
+                            if linea.product_id.categ_id in categnoorphan:
+                                _logger.info("entró al fin del proceso categoria no orphan")
+                                no_orphan = True
+                                break         
+                    if not no_orphan:
+                        line.sudo().write({'invoice_id': False})
+                        factura.sudo().write({'date':factura.date})
                 # Continúa la lista de hospedaje aplicando la reducción
+                _logger.info("Hospeda")
                 for line in hospedaje:
                     no_orphan = False
                     # Si el hospedaje queda en 0, se revisa si en la factura hay servicios que no puedan quedar huérfanos
+                    _logger.info("Hospedaje line")
+                    _logger.info(hospedaje[line])
                     if line.price_unit - hospedaje[line] == 0:
                         for linea in factura.invoice_line_ids:
                             if linea.product_id.categ_id in categnoorphan:
+                                _logger.info("entró al fin del proceso categoria no orphan")
                                 no_orphan = True
                                 break
+                            
+                       
                     # Si no hay productos huérfanos, continúa con la reducción
                     if not no_orphan:
                         del_line = False
