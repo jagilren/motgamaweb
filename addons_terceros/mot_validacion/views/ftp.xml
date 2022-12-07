@@ -1,0 +1,32 @@
+<odoo>
+    <record id="tree_view_ftp" model="ir.ui.view">
+        <field name="name">Tree View FTP</field>
+        <field name="model">mot_validacion.ftpserver</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="nombre"/>
+                <field name="host"/>
+                <field name="user"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="form_view_ftp" model="ir.ui.view">
+        <field name="name">Form View FTP</field>
+        <field name="model">mot_validacion.ftpserver</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="active"/>
+                        <field name="nombre"/>
+                        <field name="host"/>
+                        <field name="user"/>
+                        <field name="passwd" password="True"/>
+                        <field name="directory"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

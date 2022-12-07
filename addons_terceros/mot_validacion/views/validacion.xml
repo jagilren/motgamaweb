@@ -1,0 +1,32 @@
+<odoo>
+    <record id="view_validacion_wizard" model="ir.ui.view">
+        <field name="name">Wizard Validación</field>
+        <field name="model">mot_validacion.validacion</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="fecha_inicial"/>
+                    <field name="fecha_final"/>
+                    <field name="ver_metas"/>
+                </group>
+                <field name="loading" invisible="1"/>
+                <p attrs="{'invisible':[('loading','=',False)]}">Cargando...</p>
+                <group attrs="{'invisible':[('ver_metas','=',False)]}">
+                    <group string="Cálculos de reducción">
+                        <field name="meta"/>
+                        <field name="porc_reduc"/>
+                        <field name="landvalue"/>
+                        <field name="sum_aportes"/>
+                        <field name="porc_borr"/>
+                        <field name="porc_hosp"/>
+                        <field name="porc_inven"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="validar" type="object" string="Ejecutar proceso" class="btn btn-primary"/>
+                    <button special="cancel" string="Cancelar" class="btn"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

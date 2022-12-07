@@ -1,0 +1,55 @@
+<odoo>
+    <!--Tree                                                                                                              P7.0.4R -->
+    <record id="tree_view_consumos_adicionales" model="ir.ui.view">
+        <field name="name">Consumos Adicionales Tree</field>
+        <field name="model">motgama.facturaconsumos</field>
+        <field name="limit">100</field>
+        <field name="arch" type="xml"> 
+            <tree>
+                <field name="nombre"/>
+                <field name='cliente_id'/>
+                <field name="valor_total"/>
+                <field name="factura_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--Form-->
+    <record id="form_view_consumos_adicionales" model="ir.ui.view">
+        <field name="name">Consumos Adicionales Form</field>
+        <field name="model">motgama.facturaconsumos</field>
+        <field name="arch" type="xml"> 
+            <form>
+                <header>
+                    <button name="btn_facturar" type="object" class="btn btn-primary" string="Facturar y recaudar" attrs="{'invisible':[('factura_id','!=',False)]}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <h2><span><field name="nombre"/></span></h2>
+                    </group>
+                    <group>
+                        <field name="cliente_id" attrs="{'readonly':[('factura_id','!=',False)]}"/>
+                        <field name="consumo_ids" attrs="{'readonly':[('factura_id','!=',False)]}">
+                            <tree editable="bottom">
+                                <control>
+                                    <create string="Agregar consumo"/>
+                                </control>
+                                <field name="permitecambiarvalor" invisible="1"/>
+                                <field name="producto_id" domain="[('es_hospedaje','=',False),('sale_ok','=',True)]" options="{'no_create':True}"/>
+                                <field name="vlrUnitario" attrs="{'readonly':[('permitecambiarvalor','=',False)]}"/>
+                                <field name="cantidad"/>
+                                <field name="vlrSubtotal"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <h3><span>Valor total $<field name="valor_total"/></span></h3>
+                    </group>
+                    <group>
+                        <field name="factura_id" readonly="1" attrs="{'invisible':[('factura_id','=',False)]}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

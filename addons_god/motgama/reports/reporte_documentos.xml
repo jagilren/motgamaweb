@@ -1,0 +1,69 @@
+<odoo>
+    <report id="reporte_documentos"
+        model="motgama.reportedocumentos"
+        string="Reporte de Documentos"
+        report_type="qweb-pdf"
+        name="motgama.reportedocumentos"/>
+
+    <template id="reportedocumentos">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <div>
+                        <t t-if="tipo_reporte == 'fecha'">
+                            <h5 style="font-size: 10px;">Reporte de Documentos entre <span t-field="docs[0].fecha_inicial"/> y <span t-field="docs[0].fecha_final"/></h5>
+                        </t>
+                        <t t-else="">
+                            <h5 style="font-size: 10px;">Reporte de Documentos entre <span t-field="docs[0].doc_inicial"/> y <span t-field="docs[0].doc_final"/></h5>
+                        </t>
+                    </div>
+                    <div>
+                        <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                            <thead>
+                                <th class="text-center" style="width: 34%">Fecha</th>
+                                <th class="text-center" style="width: 33%">Documento</th>
+                                <th class="text-center" style="width: 33%">Cliente</th>
+                                <th class="text-center" style="width: 33%">Habitación</th>
+                                <th class="text-center" style="width: 33%">Valor Total</th>
+                                <th class="text-center" style="width: 33%">Estado</th>
+                                <th class="text-center" style="width: 33%">Usuario</th>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs" t-as="doc">
+                                    <tr>
+                                        <td class="text-center">
+                                            <span t-field="doc.fecha"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="doc.doc"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="doc.cliente"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="doc.habitacion"/>
+                                        </td>
+                                        <td class="text-center">
+                                            $ <span t-field="doc.valor"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="doc.estado"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="doc.usuario"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <br/>
+                        <p style="font-size: 10px;"><span class="font-weight-bold">Total documentos:</span> <span t-esc="count"/><br/>
+                        <span class="font-weight-bold">Total ventas:</span> $ <span t-esc="total"/></p>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,88 @@
+<odoo>
+    <menuitem id="menu_validacion" name="Llave" web_icon="mot_validacion,static/description/icon.png" sequence="1"/>
+
+    <menuitem id="menu_historicos" name="Históricos" parent="menu_validacion" sequence="0"/>
+
+    <act_window id="accion_log"
+        name="Histórico de procesos"
+        res_model="mot_validacion.log"
+        view_mode="tree,form"
+        target="main"/>
+    <menuitem id="menu_log"
+        name="Histórico de procesos"
+        parent="menu_historicos"
+        action="accion_log"
+        sequence="1"/>
+
+    <act_window id="accion_log_reduccion"
+        name="Histórico de reducción"
+        res_model="mot_validacion.log.reduccion"
+        view_mode="tree,form"
+        target="main"/>
+    <menuitem id="menu_log_reduccion"
+        name="Histórico de reducción"
+        parent="menu_historicos"
+        action="accion_log_reduccion"
+        sequence="2"/>
+
+    <menuitem id="menu_procesos" name="Procesos" parent="menu_validacion" sequence="3"/>
+
+    <act_window id="accion_validacion"
+        name="Ejecutar proceso"
+        res_model="mot_validacion.validacion"
+        view_mode="form"
+        target="new"/>
+    <menuitem id="menu_proceso_validacion"
+        name="Ejecutar proceso"
+        parent="menu_procesos"
+        action="accion_validacion"
+        sequence="4"/>
+
+    <act_window id="accion_rollback"
+        name="Rollback"
+        res_model="mot_validacion.rollback"
+        view_mode="form"
+        target="new"/>
+    <menuitem id="menu_rollback"
+        name="Rollback"
+        parent="menu_procesos"
+        action="accion_rollback"
+        sequence="5"/>
+
+    <menuitem id="menu_config" name="Configuración" parent="menu_validacion" sequence="6"/>
+
+    <act_window id="accion_ajustes"
+        name="Ajustes"
+        res_model="mot_validacion.wizard.ajustes"
+        view_mode="form"
+        target="new"/>
+    <menuitem id="menu_ajustes"
+        name="Ajustes"
+        parent="menu_config"
+        action="accion_ajustes"
+        groups="mot_validacion.group_user,mot_validacion.group_admin"
+        sequence="7"/>
+
+    <act_window id="accion_parametros"
+        name="Parámetros"
+        res_model="mot_validacion.parametro"
+        view_mode="tree,form"
+        target="main"/>
+    <menuitem id="menu_parametros"
+        name="Parámetros"
+        parent="menu_config"
+        action="accion_parametros"
+        sequence="8"/>
+
+    <act_window id="accion_ftp"
+        name="Servidores FTP"
+        res_model="mot_validacion.ftpserver"
+        view_mode="tree,form"
+        target="main"/>
+    <menuitem id="menu_ftp"
+        name="Servidores FTP"
+        parent="menu_config"
+        action="accion_ftp"
+        sequence="9"/>
+
+</odoo>

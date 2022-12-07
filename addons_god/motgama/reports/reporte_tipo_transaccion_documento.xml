@@ -1,0 +1,124 @@
+<odoo>
+    <report id="reporte_tipo_trandcto"
+        model="motgama.reportetipotrandcto"
+        string="Reporte de Tipo Transacción"
+        report_type="qweb-pdf"
+        name="motgama.reportetipotrandcto"
+        paperformat="motgama.formato_reporte"/>
+
+    <template id="reportetipotrandcto">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <h5 style="font-size: 12px; text-align: right; padding:10px;">Fecha Inicial:<span t-esc="fecha_inicial" /> Fecha Final:<span t-esc="fecha_final"/></h5>
+                    <h5 style="font-size: 12px; text-align: right; padding:10px;">Usuario:<span t-esc="usuario"/></h5>
+                    <h4 class="title-header" style="font-size: 18px; text-align: center;">TRANSACCIONES POR TIPO Y DOCUMENTO</h4>
+                    
+                    <table style="width:90%; font-size:8px; margin:5%;">
+                        <thead>
+                            <th style="width:10%; padding:2.5px; text-align:center;">Fecha</th>
+                            <th style="width:5%; padding:2.5px; text-align:center;">Tran</th>
+                            <th style="width:20%; padding:2.5px; text-align:center;">Referencia</th>
+                            <th style="width:5%; padding:2.5px; text-align:center;">Cantidad</th>
+                            <th style="width:15%; padding:2.5px; text-align:center;">Valor Unitario</th>
+                            <th style="width:15%; padding:2.5px; text-align:center;">Valor Total</th>
+                            <th style="width:10%; padding:2.5px; text-align:center;">Impuesto Total</th>
+                            <th style="width:15%; padding:2.5px; text-align:center;">Valor Total</th>
+                            <th style="width:5%; padding:2.5px; text-align:center;">Usuario</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="9"><hr></hr></td>
+                            </tr>
+                            <t t-foreach="tipos" t-as="tipo">
+                                <tr>
+                                    <td colspan="2"><h5 style="font-size:12px; font-weight:bold;">Tipo de Transacción:</h5></td>
+                                    <td colspan="2"><h5 style="font-size:12px; font-weight:bold;"><span t-esc="tipo"></span></h5></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="9"><hr></hr></td>
+                                </tr>
+                                <t t-foreach="tipos[tipo]['documentos']" t-as="dcto">
+                                    <tr>
+                                        <td colspan="2"><h5 style="font-size:12px; font-weight:bold;">Documento:</h5></td>
+                                        <td colspan="2"><h5 style="font-size:12px; font-weight:bold;"><span t-esc="dcto"></span></h5></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <t t-foreach="tipos[tipo]['documentos'][dcto]['docs']" t-as="doc">
+                                        
+                                            <tr>
+                                            <td style="text-align:center; "><span t-field="doc.fecha1"></span></td>
+                                            <td style="text-align:center;"><span t-field="doc.dcto"></span></td>
+                                            <td style="text-align:center; "><span t-field="doc.referencia"></span></td>
+                                            <td style="text-align:center; "><span t-field="doc.cantidad"></span></td>
+                                            <td style="text-align:center;"><span t-field="doc.valor_unitario"></span></td>
+                                            <td style="text-align:center;"><span t-field="doc.valor_total"></span></td>
+                                            <td style="text-align:center;"><span t-field="doc.impuesto_total"></span></td>
+                                            <td style="text-align:center;"><span t-field="doc.valor_total_general"></span></td>
+                                            <td style="text-align:center;"><span t-field="doc.usuario"></span></td>
+                                            </tr>
+                                        
+                                    </t>
+                                    <tr>
+                                        <td colspan="9"><hr></hr></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><h5 style="font-size:12px; font-weight:bold;"><span>Total Documento:</span></h5></td>
+                                        <td><h5 style="font-size:12px; font-weight:bold;"><span t-esc="dcto"></span></h5></td>
+                                        <td style="text-align:center;"><span t-esc="tipos[tipo]['documentos'][dcto]['totales']['cantidad']"/></td>
+                                        <td style="text-align:center;"><span t-esc="tipos[tipo]['documentos'][dcto]['totales']['valor_unitario']"/></td>
+                                        <td style="text-align:center; "><span t-esc="tipos[tipo]['documentos'][dcto]['totales']['valor_total']"/></td>
+                                        <td style="text-align:center;"><span t-esc="tipos[tipo]['documentos'][dcto]['totales']['impuesto']"/></td>
+                                        <td style="text-align:center; "><span t-esc="tipos[tipo]['documentos'][dcto]['totales']['valor_total_general']"/></td>
+                                        <td></td>
+                                    </tr>
+                                </t>
+                                    <tr>
+                                        <td colspan="2"><h5 style="font-size:12px; font-weight:bold;"><span>Total Tipo De Transacción</span></h5></td>
+                                        <td><h5 style="font-size:12px; font-weight:bold;"><span t-esc="tipo"></span></h5></td>
+                                        <td style="text-align:center;"><span t-esc="tipos[tipo]['totales']['cantidad']"/></td>
+                                        <td style="text-align:center;"><span t-esc="tipos[tipo]['totales']['valor_unitario']"/></td>
+                                        <td style="text-align:center; "><span t-esc="tipos[tipo]['totales']['valor_total']"/></td>
+                                        <td style="text-align:center;"><span t-esc="tipos[tipo]['totales']['impuesto']"/></td>
+                                        <td style="text-align:center; "><span t-esc="tipos[tipo]['totales']['valor_total_general']"/></td>
+                                        <td></td>
+                                    </tr>
+                                
+                            </t>
+                            <tr>
+                                <td colspan="9"><hr></hr></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><h5 style="font-size:12px; font-weight:bold;"><span>Total General</span></h5></td>
+                                <td></td>
+                                <td style="text-align:center; "><span t-esc="totales['cantidad']"/></td>
+                                <td style="text-align:center; "><span t-esc="totales['valor_unitario']"/></td>
+                                <td style="text-align:center;"><span t-esc="totales['valor_total']"/></td>
+                                <td style="text-align:center;"><span t-esc="totales['impuesto']"/></td>
+                                <td style="text-align:center;"><span t-esc="totales['valor_total_general']"/></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="9"><hr></hr></td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </t>
+        </t>
+    </template>
+
+   
+</odoo>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!--Tree                                                                                                            P7.0.4R -->
+    <record id="tree_view_bonos" model="ir.ui.view">
+        <field name="name">Bonos</field>
+        <field name="model">motgama.bonos</field>
+        <field name="arch" type="xml">
+            <tree string="Bonos">
+                <field name="codigo" />
+                <field name="multiple" />
+                <field name="tipo"/>
+                <field name="validodesde"/>
+                <field name="validohasta"/>
+                <field name="aplicahospedaje" />
+                <field name="aplica_adicional"/>
+                <field name="aplicarestaurante"/>
+                <field name="aplicaconsumos"/>
+            </tree>
+        </field>
+    </record>
+<!--Formulario-->
+    <record id="form_view_bonos" model="ir.ui.view">
+        <field name="name">Bonos</field>
+        <field name="model">motgama.bonos</field>
+        <field name="arch" type="xml">
+            <form string="Bonos">
+                <sheet>
+                    <group string="Tipo de bono">
+                        <group>
+                            <field name="tipo_bono"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <group string="Bonos consecutivos" attrs="{'invisible':[('tipo_bono','!=','consecutivo')]}">
+                        <group>
+                            <field name="prefijo" attrs="{'readonly':[('id','!=',False)]}"/>
+                            <field name="cons_desde" attrs="{'required':[('tipo_bono','=','consecutivo')],'readonly':[('id','!=',False)]}"/>
+                            <field name="cantidad" attrs="{'required':[('tipo_bono','=','consecutivo')],'readonly':[('id','!=',False)]}"/>
+                            <field name="digitos" attrs="{'required':[('tipo_bono','=','consecutivo')],'readonly':[('id','!=',False)]}"/>
+                        </group>
+                        <group>
+                            <field name="codigo_inicial"/>
+                            <field name="codigo_final"/>
+                        </group>
+                    </group>
+                    <group string="Bono">
+                        <group>
+                            <field name="codigo" attrs="{'invisible':[('tipo_bono','=','consecutivo')],'required':[('tipo_bono','!=','consecutivo')]}"/>
+                            <field name="tipo"/>
+                            <field name="multiple" invisible="1"/>
+                            <field name="maximo_uso" attrs="{'invisible':[('multiple','=',False)]}"/>
+                        </group>
+                        <group>
+                            <field name="usos" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Validez">
+                        <group>
+                            <field name="validodesde"/>
+                        </group>
+                        <group>
+                            <field name="validohasta"/>
+                        </group>
+                    </group>
+                    <group string="Valor de descuento">
+                        <field name="descuentavalor" attrs="{'invisible':[('tipo','=','porcentaje')]}"/>
+                        <field name="porcpagoefectivo" attrs="{'invisible':[('tipo','=','valor')]}"/>
+                    </group>
+                    <group string="Aplica en">
+                        <field name="aplicahospedaje"/>
+                        <field name="aplica_adicional" attrs="{'invisible':[('aplicahospedaje','=',False)]}"/>
+                        <field name="aplicarestaurante"/>
+                        <field name="aplicaconsumos"/>
+                    </group>
+                    <group>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

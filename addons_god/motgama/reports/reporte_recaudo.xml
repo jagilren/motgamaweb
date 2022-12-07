@@ -1,0 +1,147 @@
+<odoo>
+    <report id="reporte_recaudos"
+        model="motgama.reporterecaudos"
+        string="Reporte de Recaudos"
+        report_type="qweb-pdf"
+        name="motgama.reporterecaudos"
+        paperformat="motgama.formato_reporte"/>
+
+    <template id="reporterecaudos">
+        <t t-call="web.html_container">
+            <div class="header">
+                <h4 class="title-header" style="font-size: 18px; text-align: center;">COMPROBANTE RECAUDOS</h4>
+                <h5 class="title-header" style="font-size: 16px; text-align: center;"><span t-esc="company"/></h5>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td><h5 style="font-size: 10px;">FECHA GENERACIÓN:</h5></td>
+                            <td><h4 style="font-size: 10px;  padding-right:5px;"><span style="padding-right:5px;" t-esc="fecha_generacion"/></h4></td>
+                            <td><h4 style="font-size: 10px;  padding-right:5px;">FECHA INICIAL</h4></td>
+                            <td><h4 style="font-size: 10px; "><span  style="padding-right:5px;" t-esc="fecha_inicial"/></h4></td>
+                            <td><h4 style="font-size: 10px;  padding-right:5px;">FECHA FINAL</h4></td>
+                            <td><h4 style="font-size: 10px; "><span style="padding-right:5px;" t-esc="fecha_final"/></h4></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+                <div class="page">
+                    <h5 style="font-size: 10px;">
+                        <t t-if="docs[0].recepcion_reporte"> de la recepción <span t-esc="docs[0].recepcion_reporte"/></t>
+                    </h5>
+                    <div>
+                        <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                            <thead>
+                                <th class="text-center" style="width: 10%">Nro. Recaudo</th>
+                                <th class="text-center" style="width: 10%">Recepción</th>
+                                <th class="text-center" style="width: 10%">Fecha</th>
+                                <th class="text-center" style="width: 10%">Habitación</th>
+                                <th class="text-center" style="width: 13%">Tipo de Recaudo</th>
+                                <th class="text-center" style="width: 10%">Diario de pagos</th>
+                                <th class="text-center" style="width: 12%">Medio de pago</th>
+                                <th class="text-center" style="width: 15%">Valor</th>
+                                <th class="text-center" style="width: 10%">Usuario</th>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs" t-as="doc">
+                                    <tr>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span style="text-align: center;" t-field="doc.nrorecaudo"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span style="text-align: center;" t-field="doc.recepcion"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span style="text-align: center;" t-field="doc.fecha"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span  style="text-align: center;" t-field="doc.habitacion"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span style="text-align: center;" t-field="doc.tipo_recaudo"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span style="text-align: center;" t-field="doc.diario"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span style="text-align: center;" t-field="doc.medio_pago"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            $ <span style="text-align: center;" t-field="doc.valor"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span  style="text-align: center;" t-field="doc.usuario"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <br/>
+                        <h4 style="font-size: 10px;">Resumen por Tipo de Recaudo</h4>
+                    </div>
+                    <div>
+                        <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                            <thead>
+                                <th class="text-center" style="width: 50%">Tipo de Recaudo</th>
+                                <th class="text-center" style="width: 50%">Total</th>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="tipos" t-as="tipo">
+                                    <tr>
+                                        <td class="text-center">
+                                            <span style="text-align: center;" t-esc="tipo"/>
+                                        </td>
+                                        <td class="text-center">
+                                            $ <span style="text-align: center;" t-esc="tipos[tipo]"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <p><span class="font-weight-bold" style="font-size: 10px;">Total habitaciones:</span> <span t-esc="habitaciones"  style="font-size: 10px;"/></p>
+                        <br/>
+                        <h4 style="font-size: 10px;">Resumen por Medio de Pago</h4>
+                    </div>
+                    <div>
+                        <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                            <thead>
+                                <th class="text-center" style="width: 50%">Medio de Pago</th>
+                                <th class="text-center" style="width: 50%">Total</th>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="medios" t-as="medio">
+                                    <tr>
+                                        <td class="text-center">
+                                            <span style="text-align: center;" t-esc="medio"/>
+                                        </td>
+                                        <td class="text-center">
+                                            $ <span style="text-align: center;" t-esc="medios[medio]"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <br/>
+                        <h4 style="font-size: 10px;">Total Recaudos</h4><span style="font-size: 10px;"><t t-esc="total"/></span>
+                    </div>
+                    <div class="footer">
+                       <table>
+                            <tbody>
+                            <td>Página:</td>
+                            <td><span class="page"/></td>
+                            <td>/</td>
+                            <td><span class="topage"/></td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,55 @@
+<odoo>
+    <record model= "ir.ui.view" id="motgama_wizard_tipo_transaccion">
+        <field name="name">Wizard reporte tipo transacción</field>
+        <field name="model">motgama.wizard.reportetipotransaccion</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="fecha_inicial"/>
+                        <field name="fecha_final"/>
+                        <field name="filtro_transaccion" widget="many2many_checkboxes"/>
+                        <field name="resumido" />
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="get_report" string="Generar reporte" type="object" class="btn btn-primary"/>
+                    <button special="cancel" string="Cancelar" class="btn"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="tree_reporte_tipo_transaccion">
+        <field name="name">Reporte tipo transacción</field>
+        <field name="model">motgama.reportetipotransaccion</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="fecha_inicial"/>
+                <field name="fecha_final"/>
+                <field name="usuario"/>
+                <field name="dcto"/>
+                <field name="referencia"/>
+                <field name="cantidad"/>
+                <field name="valor_unitario"/>
+                <field name="impuesto_total"/>   
+            </tree>
+        </field>
+    </record>
+
+    
+
+    <record id="action_reporte_tipo_transaccion_wizard" model="ir.actions.server">
+        <field name="name">Reporte tipo de transacción</field>
+        <field name="model_id" ref="motgama.model_motgama_wizard_reportetipotransaccion"/>
+        <field name="state">code</field>
+        <field name="code">action = model.check_permiso()</field>
+    </record>
+    
+
+
+    <menuitem action="action_reporte_tipo_transaccion_wizard"
+        id="menu_reporte_tipo_transaccion"
+        parent="menu_motgama_reportes"/>
+</odoo>

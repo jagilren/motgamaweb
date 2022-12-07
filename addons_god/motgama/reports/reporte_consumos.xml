@@ -1,0 +1,126 @@
+<odoo>
+
+    <report id="reporte_consumo"
+        model="motgama.reporteconsumos"
+        string="Reporte de Consumos"
+        report_type="qweb-pdf"
+        name="motgama.reporteconsumos"/>
+
+    <template id="reporteconsumos">
+        <t t-call="web.html_container">
+                <div class="header">
+                    <h4 class="title-header" style="font-size: 18px; text-align: center;">COMPROBANTE CONSUMOS</h4>
+                    <h5 class="title-header" style="font-size: 16px; text-align: center;"><span t-esc="company"/></h5>  
+                </div>
+            
+                <div class="page">
+                    <div style="font-size: 10px;">
+                        <t t-if="tipo_reporte == 'transito'">
+                            <h5>Reporte de consumos <span t-esc="tipos_reporte[tipo_reporte]"/> del <span t-esc="hoy"/>
+                            <t t-if="recepcion_reporte"> en la recepción <span t-esc="recepcion_reporte"/></t></h5>
+                        </t>
+                        <t t-else="">
+                            <h5>Reporte de consumos <span t-esc="tipos_reporte[tipo_reporte]"/>
+                            desde <span t-field="docs[0].fecha_inicial"/> hasta <span t-field="docs[0].fecha_final"/>
+                            <t t-if="recepcion_reporte"> en la recepción <span t-esc="recepcion_reporte"/></t></h5>
+                        </t>
+                    </div>
+                    <div>
+                        <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                            <thead>
+                                <th class="text-center" style="width: 12%">Recepción</th>
+                                <th class="text-center" style="width: 10%">Fecha</th>
+                                <th class="text-center" style="width: 10%">Habitación</th>
+                                <th class="text-center" style="width: 22%">Producto</th>
+                                <th class="text-center" style="width: 10%">Cantidad</th>
+                                <th class="text-center" style="width: 12%">Valor Unitario</th>
+                                <th class="text-center" style="width: 12%">Valor Total</th>
+                                <th class="text-center" style="width: 12%">Usuario</th>
+                            </thead>
+                            
+                            <tbody>
+                                <t t-foreach="docs" t-as="doc">
+                                    <tr>
+                                        <td class="text-center">
+                                            <span t-field="doc.recepcion"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="doc.fecha"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="doc.habitacion"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="doc.producto"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="doc.cantidad"/>
+                                        </td>
+                                        <td class="text-center">
+                                            $ <span t-field="doc.valorUnitario"/>
+                                        </td>
+                                        <td class="text-center">
+                                            $ <span t-field="doc.valorTotal"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="doc.usuario"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <h6 style="font-size: 10px;">Resumen por Productos</h6>
+                        <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                            <thead>
+                                <th class="text-center" style="width: 34%">Producto</th>
+                                <th class="text-center" style="width: 34%">Cantidad</th>
+                                <th class="text-center" style="width: 34%">Total</th>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="productos" t-as="prod">
+                                    <tr>
+                                        <td class="text-center">
+                                            <span t-esc="prod"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="productos[prod]['cantidad']"/>
+                                        </td>
+                                        <td class="text-center">
+                                            $ <span t-esc="productos[prod]['valor']"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <h6 style="font-size: 10px;">Resumen por Categorías</h6>
+                        <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                            <thead>
+                                <th class="text-center" style="width: 34%">Categoría</th>
+                                <th class="text-center" style="width: 34%">Total</th>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="categorias" t-as="categ">
+                                    <tr>
+                                        <td class="text-center">
+                                            <span t-esc="categ"/>
+                                        </td>
+                                        <td class="text-center">
+                                            $ <span t-esc="categorias[categ]"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="font-size: 10px;">
+                        <p><span class="font-weight-bold">Total consumos:</span> $ <span t-esc="total"/></p>
+                    </div>
+                </div>
+            
+        </t>
+    </template>
+</odoo>

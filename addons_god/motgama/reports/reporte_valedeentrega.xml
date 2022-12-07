@@ -1,0 +1,8 @@
+<odoo>
+    <template id="reportevaledeentrega" inherit_id="stock.report_deliveryslip">
+        <xpath expr="//h1[@t-field='o.partner_id.lang']" position="before">
+            <h1><span t-field="o.picking_type_id"></span></h1>
+        </xpath>
+
+    </template>
+</odoo>

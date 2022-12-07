@@ -1,0 +1,10 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_app_ftpm,access_app_ftpm,model_app_ftpm,group_porteria,1,1,1,1
+access_app_ftpm,access_app_ftpm,model_app_ftpm,group_recepcion,1,1,1,1
+access_app_ftpm,access_app_ftpm,model_app_ftpm,group_coordinador,1,1,1,1
+access_app_ftpm,access_app_ftpm,model_app_ftpm,group_admin_sucursal,1,1,1,1
+access_app_ftpm,access_app_ftpm,model_app_ftpm,group_aux_bodega,1,1,1,1
+access_app_ftpm,access_app_ftpm,model_app_ftpm,group_superuser,1,1,1,1
+access_app_ftpm,access_app_ftpm,model_app_ftpm,group_supervisor,1,1,1,1
+access_app_ftpm,access_app_ftpm,model_app_ftpm,base.group_user,1,1,1,1
+

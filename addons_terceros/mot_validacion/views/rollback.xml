@@ -1,0 +1,23 @@
+<odoo>
+    <record id="view_rollback_wizard" model="ir.ui.view">
+        <field name="name">Wizard Rollback</field>
+        <field name="model">mot_validacion.rollback</field>
+        <field name="arch" type="xml">
+            <form>
+                <p>Seleccione los registros a los cuales desea realizar el Rollback</p>
+                <p>Este proceso es irreversible</p>
+                <group>
+                    <field name="tipo" widget="radio" required="1"/>
+                    <field name="historico_id" attrs="{'invisible':[('tipo','!=','log')],'required':[('tipo','=','log')]}"/>
+                    <field name="fecha_inicial" attrs="{'invisible':[('tipo','!=','fechas')],'required':[('tipo','=','fechas')]}"/>
+                    <field name="fecha_final" attrs="{'invisible':[('tipo','!=','fechas')],'required':[('tipo','=','fechas')]}"/>
+                    <field name="factura_ids" widget="many2many_tags" attrs="{'invisible':[('tipo','!=','facturas')],'required':[('tipo','=','facturas')]}"/>
+                </group>
+                <footer>
+                    <button name="rollback" type="object" string="Rollback" class="btn btn-primary" confirm="¿Está seguro que desea hacer Rollback a esos registros?"/>
+                    <button special="cancel" string="Cancelar" class="btn"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,8 @@
+<odoo>
+    <template id="reporteoperacionesalbaran" inherit_id="stock.report_picking">
+        <xpath expr="//h1[@t-field='o.name']" position="before">
+            <h1><span t-field="o.picking_type_id"></span></h1>
+        </xpath>
+
+    </template>
+</odoo>

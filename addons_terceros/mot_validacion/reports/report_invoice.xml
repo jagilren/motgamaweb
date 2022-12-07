@@ -1,0 +1,15 @@
+<odoo>
+    <template id="invoice_report" inherit_id="motgama.formato_factura">
+        <xpath expr="//h4[1]" position="replace">
+            <h4 style="font-size:12px">
+                <t t-if="impHab and not doc.consumo">
+                    Habitación: <span t-field="doc.habitacion_id.codigo"/><br/>
+                </t>
+                <t t-elif="impHab and doc.consumo">
+                    CONSUMO<br/>
+                </t>
+                Cliente: <span t-field="doc.partner_id"/>
+            </h4>
+        </xpath>
+    </template>
+</odoo>

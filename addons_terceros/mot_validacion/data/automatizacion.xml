@@ -1,0 +1,32 @@
+<odoo>
+    <data noupdate="1">
+        <record id="proceso_reduccion" model="ir.cron">
+            <field name="name">Proceso de llave: Ejecutar proceso</field>
+            <field name="state">code</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall">False</field>
+            <field name="model_id" ref="mot_validacion.model_mot_validacion_validacion"/>
+            <field name="code">
+fecha_final = env["motgama.generareporte"].get_hora()
+fecha_inicial = fecha_final - datetime.timedelta(hours=24)
+model.auto(fecha_inicial, fecha_final)
+
+            </field>
+            <field name="nextcall" eval="(datetime.now() + timedelta(days=2)).strftime('%Y-%m-%d 00:00:00')"/>
+        </record>
+
+        <record id="proceso_store_rollback" model="ir.cron">
+            <field name="name">Proceso de llave: Eliminar Rollback</field>
+            <field name="state">code</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall">False</field>
+            <field name="model_id" ref="mot_validacion.model_mot_validacion_rollback"/>
+            <field name="code">model.auto_delete()</field>
+            <field name="nextcall" eval="(datetime.now() + timedelta(days=2)).strftime('%Y-%m-%d 00:00:00')"/>
+        </record>
+    </data>
+</odoo>

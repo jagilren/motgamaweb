@@ -1,0 +1,140 @@
+<odoo>
+    <report id="reporte_ventas"
+        model="motgama.reporteventas"
+        string="Reporte de Ventas"
+        report_type="qweb-pdf"
+        name="motgama.reporteventas"/>
+
+    <template id="reporteventas">
+        <t t-call="web.html_container">
+            <div class="header">
+                <h1 class="title-header">Nombre de Motel</h1>
+                <h3><span t-esc="numero_reporte"/></h3>
+            </div>
+                <div class="page">
+                    <t t-if="fecha_inicial and fecha_final">
+                        <h5 style="font-size: 10px;">Reporte de ventas desde <span t-esc="fecha_inicial"/> hasta <span t-esc="fecha_final"/></h5>
+                    </t>
+                    <t t-elif="doc_inicial and doc_final">
+                        <h5 style="font-size: 10px;">Reporte de ventas desde <span t-esc="doc_inicial"/> hasta <span t-esc="doc_final"/></h5>
+                    </t>
+                    <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                        <thead>
+                            <th class="text-center" style="width: 15%">Fecha</th>
+                            <th class="text-center" style="width: 14%">Factura</th>
+                            <th class="text-center" style="width: 14%">Cliente</th>
+                            <th class="text-center" style="width: 14%">Habitación</th>
+                            <th class="text-center" style="width: 14%">Valor Total</th>
+                            <th class="text-center" style="width: 15%">Medio de pago</th>
+                            <th class="text-center" style="width: 14%">Usuario</th>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="doc">
+                                <tr>
+                                    <td class="text-center">
+                                        <span t-field="doc.fecha"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-field="doc.fac"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-field="doc.cliente"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-field="doc.habitacion"/>
+                                    </td>
+                                    <td class="text-center">
+                                        $ <span t-field="doc.valor"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-field="doc.medio_pago"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-field="doc.usuario"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <h5 style="font-size: 10px;">Resumen por productos</h5>
+                    <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                        <thead>
+                            <th>Categoría de producto</th>
+                            <th>Total ventas</th>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="prods" t-as="prod">
+                                <tr>
+                                    <td class="text-center">
+                                        <span t-esc="prod.name"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="prods[prod]"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <h5 style="font-size: 10px;">Resumen por impuestos</h5>
+                    <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                        <thead> 
+                            <th>Impuesto</th>
+                            <th>Base</th>
+                            <th>Total impuesto</th>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="imps" t-as="imp">
+                                <tr>
+                                    <td class="text-center">
+                                        <span t-esc="imp.display_name"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="imps[imp]['base']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="imps[imp]['total']"/>
+                                    </td>
+                                </tr>
+                                
+                            </t>
+                        </tbody>
+                    </table>
+                    <t t-if="len(medios) > 0">
+                        <h5 style="font-size: 10px;">Resumen por medios de pago</h5>
+                        <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                            <thead>
+                                <th>Medio de pago</th>
+                                <th>Total recaudado</th>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="medios" t-as="medio">
+                                    <tr>
+                                        <td class="text-center">
+                                            <span t-esc="medio.nombre"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="medios[medio]"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
+                    <br/>
+                    <p style="font-size: 10px;"><span class="font-weight-bold">Rango de facturas de:</span> <span t-esc="primer_factura"/> a <span t-esc="ultima_factura"/></p><br/>
+                    <p style="font-size: 10px;"><span class="font-weight-bold">Total facturas:</span> <span t-esc="count['facturas']"/><br/>
+                    <span class="font-weight-bold">Total notas crédito:</span> <span t-esc="count['rectificativas']"/><br/>
+                    <span class="font-weight-bold">Total de ventas:</span> $ <span t-esc="total"/></p>
+                    
+                   
+                </div>
+            
+                <div class="footer">
+
+
+                </div>
+        </t>
+    </template>
+</odoo>

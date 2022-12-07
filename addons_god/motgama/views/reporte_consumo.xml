@@ -1,0 +1,70 @@
+<odoo>
+    <record model="ir.ui.view" id="motgama_wizard_reporte_consumo">
+        <field name="name">Wizard reporte de consumos</field>
+        <field name="model">motgama.wizard.reporteconsumo</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Reporte de Consumos">
+                <group>
+                    <field name="tipo_reporte" widget="radio"/>
+                    <field name="recepcion" options="{'no_create': true}"/>
+                </group>
+                <group>
+                    <field name="fecha_inicial" attrs="{'invisible': [('tipo_reporte','!=', 'fecha')],'required':[('tipo_reporte','=', 'fecha')]}"/>
+                    <field name="fecha_final" attrs="{'invisible': [('tipo_reporte','!=', 'fecha')],'required':[('tipo_reporte','=', 'fecha')]}"/>
+                </group>
+                <group>
+                    <p>Si no selecciona recepción saldrán los consumos de todas las recepciones</p>
+                </group>
+                <footer>
+                    <button name="get_report" string="Generar reporte" type="object" class="oe_highlight"/>
+                    <button string="Cancelar" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="tree_reporte_consumo">
+        <field name="name">Reporte de consumos</field>
+        <field name="model">motgama.reporteconsumos</field>
+        <field name="arch" type="xml">
+            <tree string="Reporte de consumos" default_order="recepcion asc,fecha asc" create='false'>
+                <field name="recepcion"/>
+                <field name="fecha"/>
+                <field name="habitacion"/>
+                <field name="producto"/>
+                <field name="cantidad"/>
+                <field name="valorUnitario"/>
+                <field name="valorTotal"/>
+                <field name="usuario"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="search_reporte_consumos" model="ir.ui.view">
+        <field name="name">Busqueda Reporte de Consumos</field>
+        <field name="model">motgama.reporteconsumos</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Reporte">
+                <field name="producto"/>
+                <field name="categoria"/>
+                <field name="recepcion"/>
+                <filter name="recepcion" string="Recepción" context="{'group_by':'recepcion'}"/>
+                <filter string="Categoría" name="groupby_categoria" context="{'group_by':'categoria'}"/>
+                <filter string="Producto" name="groupby_producto" context="{'group_by':'producto'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_reporte_consumo_wizard" model="ir.actions.server">
+        <field name="name">Reporte de consumos</field>
+        <field name="model_id" ref="motgama.model_motgama_wizard_reporteconsumo"/>
+        <field name="state">code</field>
+        <field name="code">action = model.check_permiso()</field>
+    </record>
+
+    <menuitem action="action_reporte_consumo_wizard"
+        id="menu_reporte_consumo"
+        parent="menu_motgama_reportes"/>
+</odoo>
+

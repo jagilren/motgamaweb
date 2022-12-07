@@ -1,0 +1,9 @@
+<openerp>
+    <data>
+        <template id="assets_frontend" inherit_id="app.ftpm.form" name="Custom Module">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/appftpm/static/src/css/estilo.css" />
+            </xpath>
+        </template>
+    </data>
+</openerp>

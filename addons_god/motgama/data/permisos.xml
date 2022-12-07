@@ -1,0 +1,325 @@
+<odoo>
+    <data>
+        <!-- Flujo de habitaciones -->
+        <record id="motgama_asigna" model="motgama.permiso">
+            <field name="name">Puede asignar habitaciones</field>
+            <field name="tipo">flujo</field>
+        </record>
+        <record id="motgama_desasigna" model="motgama.permiso">
+            <field name="name">Puede desasignar habitaciones</field>
+            <field name="tipo">flujo</field>
+        </record>
+        <record id="motgama_reasigna_mayor" model="motgama.permiso">
+            <field name="name">Puede reasignar habitaciones de mayor o igual valor</field>
+            <field name="tipo">flujo</field>
+        </record>
+        <record id="motgama_reasigna_menor" model="motgama.permiso">
+            <field name="name">Puede reasignar habitaciones de menor valor</field>
+            <field name="tipo">flujo</field>
+        </record>
+        <record id="motgama_liquida_habitacion" model="motgama.permiso">
+            <field name="name">Puede liquidar habitaciones</field>
+            <field name="tipo">flujo</field>
+        </record>
+        <record id="motgama_recauda_habitacion" model="motgama.permiso">
+            <field name="name">Puede recaudar habitaciones</field>
+            <field name="tipo">flujo</field>
+        </record>
+        <record id="motgama_devuelve_abono" model="motgama.permiso">
+            <field name="name">Puede devolver abonos</field>
+            <field name="tipo">flujo</field>
+        </record>
+        <record id="motgama_rehabilita_habitacion" model="motgama.permiso">
+            <field name="name">Puede rehabilitar habitaciones</field>
+            <field name="tipo">flujo</field>
+        </record>
+        <record id="motgama_habilita_habitacion" model="motgama.permiso">
+            <field name="name">Puede habilitar habitaciones</field>
+            <field name="tipo">flujo</field>
+        </record>
+        <record id="motgama_fuera_uso" model="motgama.permiso">
+            <field name="name">Puede cambiar de estado las habitaciones a fuera de uso</field>
+            <field name="tipo">flujo</field>
+        </record>
+        <record id="motgama_fuera_servicio" model="motgama.permiso">
+            <field name="name">Puede cambiar de estado las habitaciones a fuera de servicio</field>
+            <field name="tipo">flujo</field>
+        </record>
+        <record id="motgama_cambio_plan" model="motgama.permiso">
+            <field name="name">Puede cambiar ocupación de habitaciones</field>
+            <field name="tipo">flujo</field>
+        </record>
+        <record id="motgama_precuenta" model="motgama.permiso">
+            <field name="name">Puede ver la precuenta del hospedaje</field>
+            <field name="tipo">flujo</field>
+        </record>
+        <record id="motgama_inmotica" model="motgama.permiso">
+            <field name="name">Puede ejecutar acciones de inmótica</field>
+            <field name="tipo">flujo</field>
+        </record>
+        <record id="motgama_todas_recepciones" model="motgama.permiso">
+            <field name="name">Puede ver habitaciones de todas las recepciones</field>
+            <field name="tipo">flujo</field>
+        </record>
+
+        <!-- Reservas -->
+        <record id="motgama_crea_reserva" model="motgama.permiso">
+            <field name="name">Puede crear reservas</field>
+            <field name="tipo">reserva</field>
+        </record>
+        <record id="motgama_edita_reserva" model="motgama.permiso">
+            <field name="name">Puede modificar reservas</field>
+            <field name="tipo">reserva</field>
+        </record>
+        <record id="motgama_cancela_reserva" model="motgama.permiso">
+            <field name="name">Puede cancelar reservas</field>
+            <field name="tipo">reserva</field>
+        </record>
+
+        <!-- Consumos -->
+        <record id="motgama_consumo_negativo" model="motgama.permiso">
+            <field name="name">Puede agregar consumos negativos</field>
+            <field name="tipo">consumo</field>
+        </record>
+        <record id="motgama_consumo_recepcion" model="motgama.permiso">
+            <field name="name">Puede cambiar recepción de donde salen los consumos</field>
+            <field name="tipo">consumo</field>
+        </record>
+
+        <!-- Descuentos y bonos -->
+        <record id="motgama_descuento_servicio" model="motgama.permiso">
+            <field name="name">Puede agregar descuentos por mal servicio</field>
+            <field name="tipo">desc</field>
+        </record>
+        <record id="motgama_edita_descuento" model="motgama.permiso">
+            <field name="name">Puede editar descuentos por mal servicio</field>
+            <field name="tipo">desc</field>
+        </record>
+        <record id="motgama_elimina_descuento" model="motgama.permiso">
+            <field name="name">Puede eliminar descuento por mal servicio</field>
+            <field name="tipo">desc</field>
+        </record>
+        <record id="motgama_pase_cortesia" model="motgama.permiso">
+            <field name="name">Puede agregar pases o cortesías como medios de pago</field>
+            <field name="tipo">desc</field>
+        </record>
+        <record id="motgama_bono" model="motgama.permiso">
+            <field name="name">Puede agregar bonos a la asignación</field>
+            <field name="tipo">desc</field>
+        </record>
+        <record id="motgama_quita_bono" model="motgama.permiso">
+            <field name="name">Puede retirar bonos a la asignación</field>
+            <field name="tipo">desc</field>
+        </record>
+
+        <!-- Prendas -->
+        <record id="motgama_recauda_prenda" model="motgama.permiso">
+            <field name="name">Puede recaudar prendas</field>
+            <field name="tipo">prenda</field>
+        </record>
+
+        <!-- Anticipos -->
+        <record id="motgama_ingreso_anticipo" model="motgama.permiso">
+            <field name="name">Puede ingresar abonos a habitaciones sin liquidar</field>
+            <field name="tipo">anticipos</field>
+        </record>
+
+        <!-- Objetos prestados -->
+        <record id="motgama_crea_prestados" model="motgama.permiso">
+            <field name="name">Puede prestar objetos</field>
+            <field name="tipo">prestados</field>
+        </record>
+        <record id="motgama_devuelve_prestados" model="motgama.permiso">
+            <field name="name">Puede registrar devolución de objetos prestados</field>
+            <field name="tipo">prestados</field>
+        </record>
+
+        <!-- Facturación -->
+        <record id="motgama_factura_extemporanea" model="motgama.permiso">
+            <field name="name">Puede generar facturas no asociadas a hospedaje</field>
+            <field name="tipo">factura</field>
+        </record>
+        <record id="motgama_factura_anomalia" model="motgama.permiso">
+            <field name="name">Puede registrar anomalía en facturas</field>
+            <field name="tipo">factura</field>
+        </record>
+        <record id="motgama_factura_proveedor" model="motgama.permiso">
+            <field name="name">Puede registrar facturas de compra</field>
+            <field name="tipo">factura</field>
+        </record>
+        <record id="motgama_eliminar_factura" model="motgama.permiso">
+            <field name="name">Puede eliminar facturas de compra</field>
+            <field name="tipo">factura</field>
+        </record>
+        <record id="motgama_duplicar_factura" model="motgama.permiso">
+            <field name="name">Puede duplicar facturas de compra</field>
+            <field name="tipo">factura</field>
+        </record>
+        <record id="motgama_rectificativa" model="motgama.permiso">
+            <field name="name">Puede generar facturas rectificativas</field>
+            <field name="tipo">factura</field>
+        </record>
+
+        <!-- Objetos olvidados -->
+        <record id="motgama_entregar_olvidados" model="motgama.permiso">
+            <field name="name">Puede entregar y dar de baja a objetos olvidados</field>
+            <field name="tipo">olvidados</field>
+        </record>
+
+        <!-- Informes -->
+        <record id="motgama_informe_consumos" model="motgama.permiso">
+            <field name="name">Puede generar informe de consumos</field>
+            <field name="tipo">informes</field>
+        </record>
+        <record id="motgama_informe_ocupaciones" model="motgama.permiso">
+            <field name="name">Puede generar informe de ocupaciones</field>
+            <field name="tipo">informes</field>
+        </record>
+        <record id="motgama_informe_recaudos" model="motgama.permiso">
+            <field name="name">Puede generar informe de recaudos</field>
+            <field name="tipo">informes</field>
+        </record>
+        <record id="motgama_informe_diariovtas" model="motgama.permiso">
+            <field name="name">Puede generar informe diario de ventas</field>
+            <field name="tipo">informes</field>
+        </record>
+        <record id="motgama_informe_documentos" model="motgama.permiso">
+            <field name="name">Puede generar informe de documentos</field>
+            <field name="tipo">informes</field>
+        </record>
+        <record id="motgama_informe_interfaz" model="motgama.permiso">
+            <field name="name">Puede generar interfaz contable</field>
+            <field name="tipo">informes</field>
+        </record>
+        <record id="motagama_informe_anomalias" model="motgama.permiso">
+            <field name="name">Puede generar informe de anomalías</field>
+            <field name="tipo">informes</field>
+        </record>
+        <record id="motgama.motgama_reporte_auxiliar_inventario" model="motgama.permiso">
+            <field name="name">Puede generar informe auxiliar de inventario</field>
+            <field name="tipo">informes</field>
+        </record>
+        <record id="motgama.motgama_reporte_saldos_inventario" model="motgama.permiso">
+            <field name="name">Puede generar reporte de saldos de inventario</field>
+            <field name="tipo">informes</field>
+        </record>
+        <record id="motgama.motgama_reporte_tipo_transaccion" model="motgama.permiso">
+            <field name="name">Puede generar reporte tipo de transacción</field>
+            <field name="tipo">informes</field>
+        </record>
+        <record id="motgama.motgama_reporte_tipo_trandcto" model="motgama.permiso">
+            <field name="name">Puede generar reporte tipo de transacción Documento</field>
+            <field name="tipo">informes</field>
+        </record>
+
+        <!-- Administración -->
+        <record id="motgama_cambia_precios" model="motgama.permiso">
+            <field name="name">Puede actualizar precios de habitaciones</field>
+            <field name="tipo">admin</field>
+        </record>
+        
+        <!-- Permisos Inventario -->
+        <record id="motgama_btndesechable" model="motgama.permiso">
+            <field name="name">Puede desechar transferencias inventario</field>
+            <field name="tipo">admin</field>
+        </record>
+
+        <record id="motgama_duplicar_inventario" model="motgama.permiso">
+            <field name="name">Puede duplicar transferencias inventario</field>
+            <field name="tipo">admin</field>
+        </record>
+
+        <record id="motgama_suprimir_inventario" model="motgama.permiso">
+            <field name="name">Puede suprimir transferencias inventario</field>
+            <field name="tipo">admin</field>
+        </record>
+
+        <record id="motgama_imprimir_inventario" model="motgama.permiso">
+            <field name="name">Puede imprimir compras</field>
+            <field name="tipo">admin</field>
+        </record>
+
+        <record id="motgama_desbloquear_inventario" model="motgama.permiso">
+            <field name="name">Puede desbloquear inventario</field>
+            <field name="tipo">admin</field>
+        </record>
+
+        <!-- Permisos Compra -->
+
+        <record id="motgama_suprimir_compra" model="motgama.permiso">
+            <field name="name">Puede suprimir compras</field>
+            <field name="tipo">admin</field>
+        </record>
+
+        <record id="motgama_duplicar_compra" model="motgama.permiso">
+            <field name="name">Puede duplicar compras</field>
+            <field name="tipo">admin</field>
+        </record>
+
+        <record id="motgama_editar_compra" model="motgama.permiso">
+            <field name="name">Puede editar compras</field>
+            <field name="tipo">admin</field>
+        </record>
+
+        <record id="motgama_crear_compra" model="motgama.permiso">
+            <field name="name">Puede crear compras</field>
+            <field name="tipo">admin</field>
+        </record>
+
+        <record id="motgama_cancelar_compra" model="motgama.permiso">
+            <field name="name">Puede cancelar compras</field>
+            <field name="tipo">admin</field>
+        </record>
+
+        <record id="motgama_bloquear_compra" model="motgama.permiso">
+            <field name="name">Puede bloquear compras</field>
+            <field name="tipo">admin</field>
+        </record>
+
+        <!-- productos -->
+
+        <record id="motgama_crear_productos" model="motgama.permiso">
+            <field name="name">Puede crear productos</field>
+            <field name="tipo">admin</field>
+        </record>
+
+        <record id="motgama_editar_productos" model="motgama.permiso">
+            <field name="name">Puede editar productos</field>
+            <field name="tipo">admin</field>
+        </record>
+
+        <record id="motgama_importar_productos" model="motgama.permiso">
+            <field name="name">Puede importar productos</field>
+            <field name="tipo">admin</field>
+        </record>
+
+        <!-- proovedores -->
+
+        <record id="motgama_editar_proovedores" model="motgama.permiso">
+            <field name="name">Puede editar proovedores</field>
+            <field name="tipo">admin</field>
+        </record>
+
+        <record id="motgama_crear_proovedores" model="motgama.permiso">
+            <field name="name">Puede crear proovedores</field>
+            <field name="tipo">admin</field>
+        </record>
+
+        <!-- Recaudos --> 
+
+        <record id="motgama_anular_recaudo" model="motgama.permiso">
+            <field name="name">Puede anular recaudos</field>
+            <field name="tipo">admin</field>
+        </record>
+       
+        
+        
+
+       
+
+        
+        
+        
+        
+    </data>
+</odoo>

@@ -1,0 +1,100 @@
+<odoo>
+    <data noupdate="1">
+        <record id="parametro_BORRABLES" model="mot_validacion.parametro">
+            <field name="nombre">BORRABLES</field>
+            <field name="descripcion">Listado de categorías de inventario o servicios que se pueden eliminar de las facturas. No aplica para el hospedaje base.</field>
+        </record>
+        <record id="parametro_COMODIN" model="mot_validacion.parametro">
+            <field name="nombre">COMODIN</field>
+            <field name="descripcion">Parámetro que indica que artículo(s), hará(n) las veces de comodín en caso de que el sistema no encuentre artículos de venta real para acomodar en facturas donde no exista hospedaje ni un ítem de venta. Se pueden elegir ítems específicos individuales o una categoría completa.</field>
+        </record>
+        <record id="parametro_CATEGORIA_INTERCAMBIABLE" model="mot_validacion.parametro">
+            <field name="nombre">CATEGORIA_INTERCAMBIABLE</field>
+            <field name="descripcion">Son las categorías de artículos que se pueden intercambiar entre facturas, para suplir a aquellas que tienen valor CERO</field>
+        </record>
+        <record id="parametro_CATEGORIA_NO_ORPHAN" model="mot_validacion.parametro">
+            <field name="nombre">CATEGORIA_NO_ORPHAN</field>
+            <field name="descripcion">Son las categorías que no pueden quedar “solas” o “huerfánas” en una factura que sufre proceso de modificación.</field>
+        </record>
+        <record id="parametro_MEDIOS_BORRABLES" model="mot_validacion.parametro">
+            <field name="nombre">MEDIOS_BORRABLES</field>
+            <field name="descripcion">Listado de formas de pago cuya factura puede ser modificada. Aunque en la práctica los pagos con Tarjeta no se “editan”, también debe ser posible escoger este medio de pago.</field>
+        </record>
+        <record id="parametro_FACTURA_ANOMALIA" model="mot_validacion.parametro">
+            <field name="nombre">FACTURA_ANOMALIA</field>
+            <field name="descripcion">Establece si se habilita o no la opción de marcar las facturas como “FACTURA_ANOMALIA”</field>
+        </record>
+        <record id="parametro_DETALLE_DCTO_FACT_HOSPEDAJE" model="mot_validacion.parametro">
+            <field name="nombre">DETALLE_DCTO_FACT_HOSPEDAJE</field>
+            <field name="descripcion">Indica si al momento de hacer descuentos menores del 100% en los hospedajes incluidos en las categorías del parámetro %REDUCCIONxCLASE_HOSPEDAJE n dicho descuento deberá aparecer como un ítem adicional de la factura (TRUE), o si es (FALSE) no se generará ningún ítem adicional de descuento y por tanto el valor del hospedaje remanente aparecerá con del descuento ya aplicado. Esto deberá aplicar tanto para Facturación POS como para Facturación Electrónica</field>
+        </record>
+        <record id="parametro_DETALLE_DCTO_FACT_INVENTARIOS" model="mot_validacion.parametro">
+            <field name="nombre">DETALLE_DCTO_FACT_INVENTARIOS</field>
+            <field name="descripcion">Indica si al momento de hacer descuentos menores del 100% en los artículos incluidos en las categorías del parámetro %REDUCCIONxCAT_INVENTARIO n dicho descuento deberá aparecer como un ítem adicional de la factura (TRUE), o si es (FALSE) no se generará ningún ítem adicional de descuento y por tanto el valor del del (los ) artículos aparecerá(n) con del descuento ya aplicado. Esto deberá aplicar tanto para Facturación POS como para Facturación Electrónica</field>
+        </record>
+        <record id="parametro_REDUCCIONxHOSPEDAJE" model="mot_validacion.parametro">
+            <field name="nombre">%REDUCCIONxHOSPEDAJE</field>
+            <field name="descripcion">Especifica cuál será el % del valor del hospedaje base que será eliminado de las facturas al momento de realizar el proceso. Existirán n parámetros de este tipo según las n cantidades de tipos de habitación existentes. Admite valores entre 0% hasta 100%. El valor 100% indica que el hospedaje base se eliminará completamente de la factura (si aplica), y por ende 0% indica que el valor del hospedaje base no se tocará. Es de aclarar que si un tipo de habitación tiene definido este parámetro en 0%, si la factura tiene otros ítems que entren dentro de la categoría de “BORRABLES” o algún ítem de %REDUCCIONxCAT_INVENTARIO n , de todas maneras puede ser candidata para ser modificada si cumple las otras condiciones. Pues no se toca el hospedaje pero sí otros ítems</field>
+        </record>
+        <record id="parametro_REDUCCIONxINVENTARIO" model="mot_validacion.parametro">
+            <field name="nombre">%REDUCCIONxINVENTARIO</field>
+            <field name="descripcion">Especifica n cantidad de parámetros que asignan el % de descuento que se realizará sobre las categorías de inventarios durante el proceso de reducción. Adminte valores entre 0% -100% El valor 100% indica que el artículo desaparecerá completamente de la factura. (aunque 100% sería un valor poco usual ya que son artículos con IVA descontable en compras, entonces lo normal es que hagamos descuento, más no lo eliminemos de la venta, para que crucen correctamente las compras versus las ventas a nivel contable) El valor 0% indica que para esa categoría de artículos el proceso de reducción no hará ningún tipo de modificación.</field>
+        </record>
+        <record id="parametro_PONDERACIONxDESCONTABLE" model="mot_validacion.parametro">
+            <field name="nombre">%PONDERACIONxDESCONTABLE</field>
+            <field name="descripcion">El proceso de reducción establecerá los valores que debe descontar de cada elemento descontable del que pueda echar mano.</field>
+        </record>
+        <record id="parametro_HORA_INICIO_PROCESO" model="mot_validacion.parametro">
+            <field name="nombre">HORA_INICIO_PROCESO</field>
+            <field name="descripcion">Hora del día en la cual se iniciará el proceso de reducción de ingresos. Formato Hora militar</field>
+        </record>
+        <record id="parametro_RAZON_ALIAS" model="mot_validacion.parametro">
+            <field name="nombre">RAZON_ALIAS</field>
+            <field name="descripcion">Nombre en el encabezado con el cual se identificará de donde proviene el informe</field>
+        </record>
+        <record id="parametro_FRASE_OVERRIDE_HAB" model="mot_validacion.parametro">
+            <field name="nombre">FRASE_OVERRIDE_HAB</field>
+            <field name="descripcion">Frase o palabra que reemplazará la información de la habitación (en la factura e informes) cuando a una factura se le sea eliminado completamente el ítem(s) de hospedaje</field>
+        </record>
+        <record id="parametro_EMAIL_ALERTAS" model="mot_validacion.parametro">
+            <field name="nombre">EMAIL_ALERTAS</field>
+            <field name="descripcion">Email para envío de alertas en caso de presentarse inconsistencias o no se “alcancen las metas” durante la ejecución del proceso de reducción.</field>
+        </record>
+        <record id="parametro_PERIODICIDAD_PROCESO" model="mot_validacion.parametro">
+            <field name="nombre">PERIODICIDAD_PROCESO</field>
+            <field name="descripcion">Valor entero o decimal (en días) que definirá con qué periodicidad se realiza el proceso de reducción de ingresos.</field>
+        </record>
+        <record id="parametro_ROLLBACK_MAX" model="mot_validacion.parametro">
+            <field name="nombre">ROLLBACK_MAX</field>
+            <field name="descripcion">Máximo tiempo permitido (en días) para hacer rollback sobre una factura que sufrió proceso de reducción.</field>
+        </record>
+        <record id="parametro_STORE_ROLLBACK" model="mot_validacion.parametro">
+            <field name="nombre">STORE_ROLLBACK</field>
+            <field name="descripcion">Máximo tiempo de almacenamiento (en días) permitido de la información en tabla(s), con la cual se puede hacer rollback</field>
+        </record>
+        <record id="parametro_REDUCCION" model="mot_validacion.parametro">
+            <field name="nombre">%REDUCCION</field>
+            <field name="descripcion">Parámetro que define el % de reducción que se debe procesar del total de ingresos que entran en las categorías (“BORRABLES” + %REDUCCIONxCLASE_HOSPEDAJE n + %REDUCCIONxCLASE_INVENTARIO n ). Si se establece un valor 100% (o aproximado) en este parámetro pero los porcentajes configurados en %REDUCCIONxCLASE_HOSPEDAJE n y %REDUCCIONxCLASE_INVENTARIO n son menores que %100, lógicamente no se va alcanzar la meta. En este tipo de casos se debe generar alerta de “meta no alcanzada” El parámetro sólo puede tomar valores positivos entre 0% hasta 100%</field>
+        </record>
+        <record id="parametro_PERIOD_DEL_ROLLBACK" model="mot_validacion.parametro">
+            <field name="nombre">PERIOD_DEL_ROLLBACK</field>
+            <field name="descripcion">Periodicidad (en horas) con que un proceso automáticamente eliminará la información de la(s) tabla(s) del rollback según parámetro STORE_ROLLBACK</field>
+        </record>
+        <record id="parametro_ALIAS_IMPUESTO" model="mot_validacion.parametro">
+            <field name="nombre">ALIAS_IMPUESTO</field>
+            <field name="descripcion">Alias para cada tipo de impuesto que se presente en el informe real.</field>
+        </record>
+        <record id="parametro_ALIAS_CATEGORIA" model="mot_validacion.parametro">
+            <field name="nombre">ALIAS_CATEGORIA</field>
+            <field name="descripcion">Alias para cada tipo de categoría de inventario o servicio que se presente en el informe real.</field>
+        </record>
+        <record id="parametro_PROD_DESC" model="mot_validacion.parametro">
+            <field name="nombre">PROD_DESC</field>
+            <field name="descripcion">Productos para registrar descuentos en hospedaje e inventario</field>
+        </record>
+        <record id="parametro_REDONDEO" model="mot_validacion.parametro">
+            <field name="nombre">REDONDEO</field>
+            <field name="descripcion">Establece si los valores en las facturas se redondean a centenas o miles, o no se redondea</field>
+        </record>
+    </data>
+</odoo>

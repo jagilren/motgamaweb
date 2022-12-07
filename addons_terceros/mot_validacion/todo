@@ -1,0 +1,145 @@
+41. Proceso no toma en cuenta el medio de pago abonos
+    Desarrollar
+
+32. El proceso de reducción deberá tener un margen de tiempo de mínimo 30 minutos de antelación al proceso (batch) del envío del lote de documentos que pasarán a ser facturas electrónicas.
+    ??
+
+38. Se deberá generar un script en texto plano que se pueda cargar a una base de datos “limpia” con el fin de hacer pruebas y debug sobre una plantilla preestablecida. El script deberá contar por lo menos con las siguientes características.
+    Pendiente revisar
+
+39. Se deberá brindar una capacitación especial al personal de sistemas de la empresa de mínimo tres horas sobre los bloques de código que usa este módulo y además deberá estar documentada por escrito en un documento “offline” que no esté ligado directamente con las ayudas de la aplicación.
+    Capacitar
+
+
+9. Cuando el ítem de hospedaje base es modificado en una factura por un descuento, tal descuento deberá aparecer en la nueva factura como un nuevo ítem de la misma relacionando el porcentaje del descuento y su correspondiente valor; excepto cuando el valor del descuento sea 100%, caso en el cual el ítem de hospedaje desaparecerá de la factura. Adicionalmente, cuando el valor del descuento sea 0%, el ítem de hospedaje no sufrirá ninguna variación.
+    Probar
+
+14. El valor del parámetro “%reduccion” y los valores de los n parámetros “REDUCCIONxCLASE​” se podrá modificar tanto por la vista de mantenimiento n​ de parámetros, como por una vista aparte donde los usuarios autorizados tendrán acceso sólo a modificar estos valores.
+    Probar
+
+25. Dicha “VISTA EMERGENCIA”, también tiene una opción que permitirá eliminar toda la información almacenada en la(s) tabla(s) usadas para el rollback, “sin respetar” lo dictado por los parámetros STORE_ROLLBACK y PERIOD_DEL_ROLLBACK.
+    Probar
+
+24. Deberá existir una “VISTA EMERGENCIA” con un botón donde se pueda habilitar o deshabilitar la programación de la tarea de reducción con “un sólo click”. Puede ser la misma vista donde se modifica el valor del parámetro “%reduccion”
+    Probar
+
+34. No se podrán realizar notas crédito sobre facturas modificadas por el proceso de reducción. A menos que previamente se haya hecho un rollback sobre dicha factura para que se encuentre en su estado original.
+    Probar
+
+36. Deberá existir una tabla donde cada vez que se ejecute el proceso se escriban dos columnas, una con el valor_máximo_posible_a_reducir para el proceso a ejecutar y otra columna con el valor_a_reducir, según el parámetro %reducción y el ingreso asociado a ese periodo.
+    Probar
+
+20. Todos los movimientos que se realicen con los artículos que entren en la categoría de “COMODIN”, deberán quedar reportados en los informes de inventarios, tal como se opera con cualquier artículo de venta.
+    Probar
+
+10. Toda factura que se le haya eliminado completamente el ítem de hospedaje debe desasociarse de la habitación origen que la generó de tal forma que en los informes y en la tirilla aparezca como “CONSUMO” o una palabra o frase parametrizable.
+    Probar
+
+30. Si el valor arrojado por el cálculo de la función “REDUCCION POSIBLE” = FALSE. (Ver ​Ejemplo​). Significa que debido a la parametrización actual no fue posible alcanzar la reducción en ingresos deseada. Cuando se presente este caso, el procedimiento de reducción de todas maneras se debe ejecutar, pero se debe lanzar una alerta vía email o por cualquiera de los canales definidos por la aplicación para notificar alertas; donde el administrador del sistema o aquellos que tengan permiso para interactuar con el parámetro “%REDUCCION” reciban dicha alerta para proceder a realizar los cambios pertinentes de tal forma que en la próxima ejecución de la rutina si se logre alcanzar el objetivo deseado. Esta alerta debe notificar de manera muy escueta cual era el valor deseado y cual fue el valor alcanzado.
+    Probar
+
+29. En caso de que el proceso de reducción encuentre una inconsistencia durante su ejecución, este deberá hacer un rollback de todas las transacciones realizadas en ese periodo y lanzar una alerta al administrador del sistema donde notifique que se debe revisar el o los documentos que generaron la inconsistencia.
+    Probar
+
+31. Deberá existir un log donde se pueda consultar las fechas y horas de las ejecuciones de la tarea de reducción y si este fue exitoso o fallido.
+    Probar el fallido
+
+22. Antes de la realización del proceso de reducción de ingresos se generará un informe y/o una(s) tabla(s) en una base de datos externa donde se detallen los ingresos reales del turno o periodo que se va afectar, esto para que los entes de control puedan visualizar cuál fue el ingreso real. Este informe también podrá generarse en hoja de cálculo
+    22.1. Actualmente este informe se envía a servicios en la nube como Dropbox, AWS, OneDrive o servidores FTP. El aplicativo debe tener por lo menos una vista donde se pueda configurar los parámetros que le indicarán los datos de autenticación y tipo de servicio a donde se alojará esta información y permitirá por lo menos enviar la información a dos servicios de almacenamiento diferentes para redundancia.
+    22.2. Como los conectores a servicios en la nube tipo Dropbox, OneDrive, Google Drive, etc cambian frecuentemente en sus protocolos de autenticación, se debe garantizar el envío a través de FTP que se puede manejar internamente desde el departamento T.I de la empresa.
+    22.3. El informe con ingresos reales no debe tener encabezados tales como NIT, RUT, Resoluciones de Facturación, direcciones, contactos, etc que comprometan a la empresa ni palabras que indiquen impuestos o control fiscal tales como FACTURA, NOTA CRÉDITO, IVA, IMPOCONSUMO, Base,ReteFuente,etc. Se utilizarán códigos internos que nos permitan identificar de dónde proviene el informe. Por ejemplo si en los ingresos aparecen x pesos en el impuesto de IVA19, el informe reemplazará la palabra IVA19 con su respectivo ALIAS definido en los parámetros.
+    22.4. Si existe un impuesto nuevo o una categoría de venta nueva en los ingresos, no parametrizado aún en la ​tabla de parámetros de reducción de ingresos​, este se mostrará como “NO PARAMETRIZADO” o “DESCONOCIDO”.
+    22.5. En la parte final de este informe debe aparecer una tabla donde se especifican los siguientes relaciones las “FACTURAS_ANOMALÍA” del turno:
+        22.5.1. # de Factura
+        22.5.2. Fecha y Hora
+        22.5.3. Motivo de la anomalía
+        22.5.4. En la aplicación Motgama deberá existir un reporte que permita visualizar todas la facturas marcadas como FACTURA_ANOMALIA a PDF y Excel.
+    22.6. El informe que reporta los ingresos ya reducidos también podrá ser exportable a hoja de cálculo con el fin de poder realizar comparativos entre los dos movimientos (full y reducido). Ambas hojas de cálculo deberán tener la misma estructura.
+    Probar
+    
+
+1. Apoyándose en la parametrización, el aplicativo, realizará un proceso automático e “invisible” para los operarios del mismo donde se realice una reducción de ingresos del turno o periodo en el cual se aplicó.
+    Listo, revisar
+
+2. Este proceso de reducción se parametriza en la aplicación, de tal forma que se le especifique que tipo de servicios de hospedaje o qué categorías de artículos de venta se podrán procesar (marcandolos como “BORRABLES” o %REDUCCIONxCLASE o %REDUCCIONxCLASE_INVEN) para que desaparezcan de la facturación o sean disminuidos, de tal manera que las facturas que cumplan la(s) condición(es) serán alteradas de su estado original.
+    Listo, revisar
+
+3. Se asignarán unos parámetros de ponderación, de tal forma que el proceso de reducción establecerá los valores que debe descontar de cada elemento descontable del que pueda echar mano. Ilustremos esto en la siguiente tabla(s) un procedimiento particular. Para una reducción de ingresos de $7 millones de pesos, antes de impuestos. Esto con el fín que no se cargue toda la reducción a un sólo tipo de servicio o categoría de venta y se vea más real el descuento aplicado, pues en años anteriores que no se tuvo en cuenta esto, la reducción la realizaba dando prioridad siempre al hospedaje base y nos encontrábamos con situaciones que para “llegar a la meta” de descuento teníamos que aplicar descuentos superiores al 90% en los hospedajes base.
+    Listo, revisar
+
+4. El proceso se “disparará” en forma automática obedeciendo los parámetros “PERIODICIDAD_PROCESO” y “HORA_INICIO_PROCESO”. En caso de que el sistema esté apagado o el proceso de reducción esté deshabilitado al momento de dispararse el evento, la tarea se ejecutará en el próximo horario correspondiente según la periodicidad y hora.
+    Listo, revisar
+
+5. Ver anexo ​ejemplo​ práctico de un proceso de reducción.
+    Listo, revisar
+
+7. No se podrá hacer marcaje de “FACTURA_ANOMALIA”, sobre rangos de facturas que ya estuvieron involucradas en un proceso de reducción de ingresos, independiente si fueron modificadas o no por dicho proceso.
+    Listo, revisar
+
+8. Toda factura que cumpla las siguientes condiciones puede ser modificada:
+    8.1. Que todas su(s) forma(s) de pago estén incluidos en el parámetro de “MEDIOS_BORRABLES”
+    8.2. Que no tenga marca “FACTURA_ANOMALIA”
+    8.3. Que por lo menos tenga un ítem de venta o servicio que esté dentro del parámetro “BORRABLES”, “​%REDUCCIONxCLASE_HOSPEDAJE”​n o​ %REDUCCIONxCLASE_INVEN”​n
+    Listo, revisar
+
+11. Las cantidades de ítems que no estén dentro de la categoría de “BORRABLES” deben permanecer iguales antes y después del proceso de reducción (independiente si su valor de venta fue disminuido o no), pero pueden quedar distribuidas en facturas diferentes a donde fueron generadas en el movimiento original.
+    Listo, revisar
+
+12. El rango de facturación se debe respetar, es decir no se crearán ni eliminarán facturas, solamente se editarán.
+    Listo, revisar
+
+13. Se modificarán facturas de manera aleatoria hasta que el proceso encuentre que se haya alcanzado la meta definida por la fórmula (INGRESO_BRUTO*“%reduccion”).
+    Listo, revisar
+
+15. Las facturas que no cumplan la(s) condición(es) o que estén marcadas como “FACTURA_ANOMALIA”, permanecerán intactas, tal como se generaron originalmente al momento de cobrarle al cliente.
+    Listo, revisar
+
+16. Si una factura tiene todos sus ítems dentro de la categoría “BORRABLES” y durante el proceso de reducción se le eliminan todos sus ítems, otra factura debe “donarle” un ítem que no esté dentro de la categoría de “BORRABLES”, cuidando eso sí que la factura que hace las veces de “donante” permanezca por lo menos con un ítem para evitar que quede como FACTURA_CERO.
+    Listo, revisar
+
+17. Si durante el proceso de reducción no se encuentran la suficiente cantidad de ítems por fuera de la categoría “BORRABLES” para suplir las FACTURA_CERO, se deberán suplir con artículos que estén dentro del parámetro “COMODÍN”. Si dentro del parámetro “COMODIN”, se puede elegir más de un tipo ítem, entonces aleatoriamente el sistema elegirá uno de los candidatos para llenar esa plaza faltante en la FACTURA_CERO.
+    Listo, revisar
+
+18. Como durante el proceso de intercambio de ítems entre facturas, para llenado de plazas en FACTURA_CERO, es posible que se “hagan trueques” de ítems que inicialmente se descontaron de una factura generada en la recepción A y que pasen a una factura generada en la recepción B, es de aclarar que este proceso no modificará a nivel de inventarios el origen del lugar o ubicación de donde debe ser descontado dicho inventario. Pues a pesar de que la factura modificada muestre una salida de cierta recepción o ubicación, en la práctica este posiblemente salió de otra..
+    Listo, revisar
+
+19. El proceso de intercambio de ítems debe garantizar la sumatoria de cantidades para cada ítem siempre sea >= 0 para todas la facturas y todos los ítems en cada documento modificado.
+    Listo, revisar
+
+21. Las facturas modificadas deben quedar por lo menos con un ítem facturable, es decir ninguna puede quedar con valor cero (FACTURA_CERO)
+    Listo, revisar
+
+23. A pesar de que el proceso de reducción de ingresos se realiza en forma automática, el administrador del sistema podrá realizar dicho proceso por demanda, de tal manera que debe existir una vista donde se pueda ejecutar en forma manual dicho procedimiento, especificando los rangos de facturación que se afectarán o tiempos inicial y final de las facturas que serán modificadas. Se debe tener presente eso sí que el proceso por demanda no se podrá ejecutar sobre facturas que fueron ya registradas como facturas electrónicas.
+    Listo, revisar
+
+26. La tarea de reducción de ingresos se debe realizar independiente si el sistema está conectado o desconectado del internet, pues es un proceso local. Eso sí, en caso de no haber internet y no se pueda enviar la información de ingresos reales a los servicios de alojamiento o base de datos externa, esta debe reprogramarse en forma automática para que en el momento que retorne el internet la información sea enviada. Por tanto esta información deberá quedar almacenada temporalmente en el dispositivo “local” hasta que se garantice que si se envió a los servicios de almacenamiento externo.
+    Listo, revisar
+
+27. Por experiencia sabemos que por errores humanos, se presenta algunas veces situaciones donde una factura que es “inmodificable”, la registran para que cumpla las condiciones de “modificable” y por tanto el proceso de reducción la cambia. Para estos casos el sistema debe proveer una utilidad de Rollback sobre facturas específicas para retornarlas a su estado original. Este proceso de Rollback sólo se podrá realizar sobre facturas que no se hayan convertido en facturas electrónicas y de todas maneras deben cumplir el parámetro ROLLBACK_MAX .
+    Listo, revisar
+
+33. Como probablemente durante la ejecución del proceso de reducción existirán abonos de hospedajes activos, o abonos a reservas, el proceso de reducción no debe “tocar” para nada este tipo de ingresos que aún no constituyen factura.
+    Listo, revisar
+
+37. Sólo se podrán marcar como “FACTURA_ANOMALIA”, aquellos documentos que no hayan estado cobijados por el proceso de reducción de ingresos, independiente si esta haya sido modificada o no por este proceso.
+    Listo, revisar
+
+6. Los operarios(as), que tengan permiso, podrán hacer una marca sobre las facturas denominadas “CLIENTES PROBLEMA”, dicha marca se denominará “FACTURA_ANOMALÍA”, por tanto deberá existir una vista donde se puede hacer este marcaje (o desmarcaje) sobre las facturas, de tal forma que estas facturas no sean tocadas por el proceso de reducción de ingresos.
+    6.1. Existirá también una vista (exportable a PDF y a Hoja de Cálculo) donde se puedan consultar las facturas anomalía x rango de fechas donde se detallará lo siguiente:
+        6.1.1. # de Factura
+        6.1.2. Fecha y Hora
+        6.1.3. Motivo de la anomalía
+    Listo, revisar
+
+28. El proceso de Rollback no debe afectar las cantidades de inventario (excepto los COMODINES), por tanto si la(s) factura(s) a la(s) cual(es) se le realiza Rollback fue(ron) donante(s) para otras facturas, se debe echar mano de los COMODINES para devolver los artículos “donados” a la factura a la cual se le va a hacer Rollback y dejar las otras en valores diferentes de CERO.
+    Listo, revisar
+
+35. Debe haber una vista o reporte donde se puedan consultar las facturas marcadas como “FACTURA_ANOMALIA”, por rango de fechas o de # de Factura detallando lo siguiente:
+    35.1. # de Factura
+    35.2. Fecha y hora de generación de la anomalía
+    35.3. Descripción breve del motivo de la anomalía.
+    Reporte de anomalías en Motgama
+        Listo, revisar
+
+Suma algebraica de un producto de inventario no puede ser negativo en ninguna factura
+Descuento debe reducirse en igual medida que la línea a la que aplica

@@ -1,0 +1,718 @@
+<odoo>
+    <report id="reporte_ventas"
+        model="motgama.reporteventas"
+        string="Reporte de Ventas"
+        report_type="qweb-pdf"
+        name="motgama.reporteventas"/>
+
+    <template id="reporteventas">
+        <t t-call="web.html_container">
+            <t t-if="numero_reporte == '1'">
+                <div class="header">
+                    <h1 class="title-header"><span t-esc="company" /></h1>
+                </div>
+                    <div class="page">
+                        <t t-if="fecha_inicial and fecha_final">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td><h4 style="font-size: 10px; ">FECHA INICIAL</h4></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="fecha_inicial"/></h4></td>
+                                        <td><h4 style="font-size: 10px; ">FECHA FINAL</h4></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="fecha_final"/></h4></td>
+                                        <td><h5 style="font-size: 10px;">FECHA GENERACIÓN:</h5></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="fecha_generacion"/></h4></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="font-weight-bold"><h5 style="font-size: 10px;">FACTURA INICIAL:</h5></span></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="primer_factura"/></h4></td>
+                                        <td><h5 style="font-size: 10px;">FACTURA FINAL:</h5></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="ultima_factura"/></h4></td>
+                                        <td><h5 style="font-size: 10px;">TERMINAL:</h5></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="terminal"/></h4></td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </t>
+                        
+                        <t t-elif="doc_inicial and doc_final">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td><h4 style="font-size: 10px; ">FECHA INICIAL</h4></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="doc_inicial"/></h4></td>
+                                        <td><h4 style="font-size: 10px; ">FECHA FINAL</h4></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="doc_final"/></h4></td>
+                                        <td><h5 style="font-size: 10px;">FECHA GENERACIÓN:</h5></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="fecha_generacion"/></h4></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="font-weight-bold"><h5 style="font-size: 10px;">FACTURA INICIAL:</h5></span></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="primer_factura"/></h4></td>
+                                        <td><h5 style="font-size: 10px;">FACTURA FINAL:</h5></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="ultima_factura"/></h4></td>
+                                        <td><h5 style="font-size: 10px;">TERMINAL:</h5></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="terminal"/></h4></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                        
+                        <table style="width: 100%; font-size: 8px; ">
+                            
+                            <thead style="border: 1px solid black;">
+                                <th class="text-center" style="width: 8%; ">Fecha</th>
+                                <th class="text-center" style="width: 8%; ">Hora Entrada</th>
+                                <th class="text-center" style="width: 8%; ">Hora Salida</th>
+                                <th class="text-center" style="width: 8%; ">Documento</th>
+                                <th class="text-center" style="width: 8%; ">Cliente</th>
+                                <th class="text-center" style="width: 5%; ">Habitación</th>
+                                <th class="text-center" style="width: 5%; ">Placa</th>
+                                <th class="text-center" style="width: 10%; ">Medio de pago</th>
+                                <th class="text-center" style="width: 10%; ">Usuario</th>
+                                <th class="text-center" style="width: 10%; ">Servicio</th>
+                                <th class="text-center" style="width: 10%;">Subtotal</th>
+                                <th class="text-center" style="width: 10%; ">Total</th>
+                            </thead>
+                            <tbody>
+
+                                <t t-foreach="docs" t-as="doc">
+                                  
+                                        <tr style="border:2px solid black;">
+                                            <td class="text-center" style="text-align:center;">
+                                                <span t-field="doc.fecha"/>
+                                            </td>
+                                            <td class="text-center" style="text-align:center;">
+                                                <span t-field="doc.factura.asignafecha"/>
+                                            </td>
+                                            <td class="text-center" style="text-align:center;">
+                                                <span t-field="doc.factura.liquidafecha"/>
+                                            </td>
+                                            <td class="text-center" style="text-align:center; " >
+                                                <span t-field="doc.fac"/>
+                                            </td>
+                                            <td class="text-center" style="text-align:center; " >
+                                                <span t-field="doc.cliente" />
+                                            </td>
+                                            <td class="text-center" style="text-align:center; " >
+                                                    <span t-field="doc.habitacion"/>
+                                            </td>
+                                            <td class="text-center" style="text-align:center; " >
+                                                    <span t-esc="doc.factura.movimiento_id.placa_vehiculo"/>
+                                            </td>
+                                            <td class="text-center" style="text-align:center; " >
+                                                <span t-field="doc.medio_pago"/>
+                                            </td>
+                                            <td class="text-center" style="text-align:center; " >
+                                                <span t-field="doc.usuario"/>
+                                            </td>
+                                            <td colspan="2" class="text-center" style="text-align:center; " >
+                                                <table style="font-size: 8px; width:18%;">
+                                                    <t t-foreach="facs[doc.factura]" t-as="category">
+                                                        <tr>
+                                                        <td class="text-center" style="text-align:center;">
+                                                            <span t-field="category.name" />
+                                                        </td>
+                                                        <td class="text-center" style="text-align:right;">
+                                                            $ <span t-esc="facs[doc.factura][category]"/>
+                                                        </td> 
+                                                        </tr>
+                                                    </t>
+                                                </table>
+                                            </td>
+                                            <td class="text-center" style="font-weight: bold; color:red; text-align:center;" >
+                                                $ <span  t-esc="doc.valor"/>
+                                            </td>
+                                            
+                                        </tr>
+                                    
+                                </t>
+                            
+                        </tbody>
+                    </table>
+                    <br/>
+                    <h5 style="font-size: 10px;">Resumen por productos</h5>
+                    <table style="width: 100%; font-size: 8px;  text-align:center;" class="table table-sm table-bordered">
+                        <thead>
+                            <th class="text-center">Categoría de producto</th>
+                            <th class="text-center">Total ventas</th>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="prods" t-as="prod">
+                                <tr>
+                                    <td class="text-center" style="text-align:center;" > 
+                                        <span t-esc="prod.name"/>
+                                    </td>
+                                    <td class="text-center" style="text-align:center; " >
+                                        <span t-esc="prods[prod]"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <h5 style="font-size: 10px;">Resumen por Neto1</h5>
+                    <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                        <thead> 
+                            <th class="text-center">Neto1</th>
+                            <th class="text-center">Subneto1</th>
+                            <th class="text-center">Total Neto1</th>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="imps" t-as="imp">
+                                <tr>
+                                    <td class="text-center" style="text-align:center; ">
+                                        <span t-esc="alias_impuesto[imp]" />
+                                    </td>
+                                    <td class="text-center" style="text-align:center; ">
+                                        <span t-esc="imps[imp]['base']"/>
+                                    </td>
+                                    <td class="text-center" style="text-align:center; ">
+                                        <span t-esc="imps[imp]['total']"/>
+                                    </td>
+                                </tr>
+                                
+                            </t>
+                        </tbody>
+                    </table>
+                    <t t-if="len(medios) > 0">
+                        <h5 style="font-size: 10px;">Resumen por medios de pago</h5>
+                        <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                            <thead>
+                                <th>Medio de pago</th>
+                                <th>Total recaudado</th>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="medios" t-as="medio">
+                                    <tr>
+                                        <td class="text-center" style="text-align:center;" >
+                                            <span t-esc="medio.nombre"/>
+                                        </td>
+                                        <td class="text-center" style="text-align:center;">
+                                            <span t-esc="medios[medio]"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
+                    <br/>
+                    <t t-if="len(docs) > 0">
+                        <h5 style="font-size: 10px;">Resumen por tipo de documento</h5>
+                        <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                            <thead>
+                                <th>Tipo Documento</th>
+                                <th>Valor</th>
+                                <th>Conteo</th>
+                                <th>Cantidad</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">
+                                        <span>TOTAL DOCUMENTOS</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="valor_factura"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span># DE DOCUMENTOS</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="total_facturas"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">
+                                        <span>TOTAL RECTIFICATIVAS</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="valor_notas_credito"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span># DE RECTIFICATIVAS</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="total_notas_credito"/>
+                                    </td>
+                                </tr>
+                                  
+                               
+                            </tbody>
+                        </table>
+                    </t>
+                    
+                    <p style="font-size: 10px;"><span class="font-weight-bold">Conteo Documentos:</span> <span t-esc="count['facturas']"/><br/>
+                    <span class="font-weight-bold">Número Rectificativas:</span> <span t-esc="count['rectificativas']"/><br/>
+                    <span class="font-weight-bold">Valor Rectificativas:</span> <span t-esc="rectificativas"/><br/>
+                    <span class="font-weight-bold">Número de ventas:</span> $ <span t-esc="total"/></p>
+                    
+                   
+                </div>
+            
+                <div class="footer">
+
+
+                </div>
+            </t>
+            <t t-elif="numero_reporte == '2'">
+                  
+                
+                
+                <div class="header">
+                    <h4 class="title-header" style="font-size: 18px; text-align: center;">COMPROBANTE INFORME DIARIO DE VENTAS X FACTURA</h4>
+                    <h5 class="title-header" style="font-size: 16px; text-align: center;"><span t-esc="company"/></h5>
+                    <h5 class="title-header" style="font-size: 16px; text-align: center;">NIT <span t-esc="nit"/></h5>
+                    <h5 class="title-header" style="font-size: 16px; text-align: center;"><span t-esc="razon_social"/></h5>
+                    <img t-att-src="'logo'" style="z-index:-1; position:absolute; top:2.5px; left:2.5px; justify-content:center;"  />
+                </div>
+                    <div class="page" style="margin-top:300px;">
+                        <div><br></br></div>
+                        <br/>
+                        <t t-if="fecha_inicial and fecha_final">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td><h4 style="font-size: 10px; ">FECHA INICIAL</h4></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="fecha_inicial"/></h4></td>
+                                        <td><h4 style="font-size: 10px; ">FECHA FINAL</h4></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="fecha_final"/></h4></td>
+                                        <td><h5 style="font-size: 10px;">FECHA GENERACIÓN:</h5></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="fecha_generacion"/></h4></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="font-weight-bold"><h5 style="font-size: 10px;">FACTURA INICIAL:</h5></span></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="primer_factura"/></h4></td>
+                                        <td><h5 style="font-size: 10px;">FACTURA FINAL:</h5></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="ultima_factura"/></h4></td>
+                                        <td><h5 style="font-size: 10px;">TERMINAL:</h5></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="terminal"/></h4></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="font-weight-bold"><h5 style="font-size: 10px;">NOTA CREDITO INICIAL:</h5></span></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="primer_nota_credito"/></h4></td>
+                                        <td><h5 style="font-size: 10px;">NOTA CREDITO FINAL:</h5></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="ultima_nota_credito"/></h4></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                        
+                        <table style="width: 100%; font-size: 8px; margin-top:2.5%;" class="table table-sm table-bordered">
+                            <thead>
+                                <th class="text-center" style="width: 14%">Fecha</th>
+                                <th class="text-center" style="width: 14%">Documento</th>
+                                <th class="text-center" style="width: 14%">Cliente</th>
+                                <th class="text-center" style="width: 14%">Fecha Salida</th>
+                                <th class="text-center" style="width: 14%">Valor Total</th>
+                                <th class="text-center" style="width: 15%">Medio de pago</th>
+                                <th class="text-center" style="width: 14%">Usuario</th>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs" t-as="doc">
+                                    <tr>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span t-field="doc.fecha"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span t-field="doc.fac"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span t-field="doc.cliente"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span t-field="doc.fecha_salida"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            $ <span t-field="doc.valor"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span t-field="doc.medio_pago"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span t-field="doc.usuario"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <h5 style="font-size: 10px;">Resumen por Categorías de Productos</h5>
+                        <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                            <thead>
+                                <th>Categoría de producto</th>
+                                <th>Total ventas</th>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="prods" t-as="prod">
+                                    <tr>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span t-esc="prod.name"/>
+                                        </td>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span t-esc="prods[prod]"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <h5 style="font-size: 10px;">Resumen por impuestos</h5>
+                        <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                            <thead> 
+                                <th>Impuesto</th>
+                                <th>Base</th>
+                                <th>Total impuesto</th>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="imps" t-as="imp">
+                                    <tr>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span t-esc="imp.display_name"/>
+                                        </td>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span t-esc="imps[imp]['base']"/>
+                                        </td>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span t-esc="imps[imp]['total']"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td  style="text-align: center;" class="text-center">
+                                        <h4 style="font-size:10px; font-weight:bold; text-align:center;">Total</h4>
+                                    </td>
+                                    <td  style="text-align: center;" class="text-center">
+                                        <span t-esc="total_impuestos_base"/>
+                                    </td>
+                                    <td style="text-align: center;"  class="text-center">
+                                        <span t-esc="valor_impuestos_total"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <t t-if="len(medios) > 0">
+                            <h5 style="font-size: 10px;">Resumen por medios de pago</h5>
+                            <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                                <thead>
+                                    <th>Medio de pago</th>
+                                    <th>Total recaudado</th>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="medios" t-as="medio">
+                                        <tr>
+                                            <td  style="text-align: center;" class="text-center">
+                                                <span t-esc="medio.nombre"/>
+                                            </td>
+                                            <td  style="text-align: center;" class="text-center">
+                                                <span t-esc="medios[medio]"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+                        <t t-if="len(docs) > 0">
+                            <h5 style="font-size: 10px;">Resumen por tipo de documento</h5>
+                            <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                                <thead>
+                                    <th>Tipo Documento</th>
+                                    <th>Valor</th>
+                                    <th>Conteo</th>
+                                    <th>Cantidad</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span>TOTAL FACTURAS</span>
+                                        </td>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span t-esc="valor_factura"/>
+                                        </td>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span># DE FACTURAS</span>
+                                        </td>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span t-esc="total_facturas"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span>TOTAL NOTAS CREDITO</span>
+                                        </td>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span t-esc="valor_notas_credito"/>
+                                        </td>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span># DE NOTAS CREDITO</span>
+                                        </td>
+                                        <td   style="text-align: center;" class="text-center">
+                                            <span t-esc="total_notas_credito"/>
+                                        </td>
+                                    </tr>
+                                      
+                                   
+                                </tbody>
+                            </table>
+                        </t>
+                       
+
+                        <t t-elif="doc_inicial and doc_final">
+                            <h4 style="font-size: 10px; ">Reporte de ventas desde <span t-esc="doc_inicial"/> hasta <span t-esc="doc_final"/></h4>
+                            <h5 style="font-size: 10px;"><span class="font-weight-bold">Rango de Facturas de:</span> <span t-esc="primer_factura"/> a <span t-esc="ultima_factura"/></h5><br/>
+                            <h4>Fecha de Generación del documento:<span t-esc="fecha_generacion"/></h4>
+                            <h4>Terminal:<span t-esc="terminal"/></h4>
+                        </t>
+                        <p style="font-size: 10px;"><span class="font-weight-bold">Total facturas:</span> <span t-esc="count['facturas']"/><br/>
+                        <span class="font-weight-bold">Total notas crédito:</span> <span t-esc="count['rectificativas']"/><br/>
+                        <span class="font-weight-bold">Total de ventas:</span> $ <span t-esc="total"/></p>
+                        
+                       
+                    </div>
+                
+                    <div class="footer">
+                       <table>
+                            <tbody>
+                            <td>Página:</td>
+                            <td><span class="page"/></td>
+                            <td>/</td>
+                            <td><span class="topage"/></td>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+
+
+
+            </t>
+
+            <t t-else="">
+                
+                
+                
+                <div class="header">
+                    <h4 class="title-header" style="font-size: 18px; text-align: center;">COMPROBANTE INFORME DIARIO DE VENTAS X FACTURA</h4>
+                    <h5 class="title-header" style="font-size: 16px; text-align: center;"><span t-esc="company"/></h5>
+                    <h5 class="title-header" style="font-size: 16px; text-align: center;">NIT <span t-esc="nit"/></h5>
+                    <h5 class="title-header" style="font-size: 16px; text-align: center;"><span t-esc="razon_social"/></h5>
+                    <img t-att-src="'logo'" style="z-index:-1; position:absolute; top:2.5px; left:2.5px; justify-content:center;"  />
+                </div>
+                    <div class="page" style="margin-top:300px;">
+                        <div><br></br></div>
+                        <br/>
+                        <t t-if="fecha_inicial and fecha_final">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td><h4 style="font-size: 10px; ">FECHA INICIAL</h4></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="fecha_inicial"/></h4></td>
+                                        <td><h4 style="font-size: 10px; ">FECHA FINAL</h4></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="fecha_final"/></h4></td>
+                                        <td><h5 style="font-size: 10px;">FECHA GENERACIÓN:</h5></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="fecha_generacion"/></h4></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="font-weight-bold"><h5 style="font-size: 10px;">FACTURA INICIAL:</h5></span></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="primer_factura"/></h4></td>
+                                        <td><h5 style="font-size: 10px;">FACTURA FINAL:</h5></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="ultima_factura"/></h4></td>
+                                        <td><h5 style="font-size: 10px;">TERMINAL:</h5></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="terminal"/></h4></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="font-weight-bold"><h5 style="font-size: 10px;">NOTA CREDITO INICIAL:</h5></span></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="primer_nota_credito"/></h4></td>
+                                        <td><h5 style="font-size: 10px;">NOTA CREDITO FINAL:</h5></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="ultima_nota_credito"/></h4></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                        
+                        <table style="width: 100%; font-size: 8px; margin-top:2.5%;" class="table table-sm table-bordered">
+                            <thead>
+                                <th class="text-center" style="width: 14%">Fecha</th>
+                                <th class="text-center" style="width: 14%">Documento</th>
+                                <th class="text-center" style="width: 14%">Cliente</th>
+                                <th class="text-center" style="width: 14%">Fecha Salida</th>
+                                <th class="text-center" style="width: 14%">Valor Total</th>
+                                <th class="text-center" style="width: 15%">Medio de pago</th>
+                                <th class="text-center" style="width: 14%">Usuario</th>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs" t-as="doc">
+                                    <tr>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span t-field="doc.fecha"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span t-field="doc.fac"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span t-field="doc.cliente"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span t-field="doc.fecha_salida"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            $ <span t-field="doc.valor"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span t-field="doc.medio_pago"/>
+                                        </td>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span t-field="doc.usuario"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <h5 style="font-size: 10px;">Resumen por Categorías de Productos</h5>
+                        <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                            <thead>
+                                <th>Categoría de producto</th>
+                                <th>Total ventas</th>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="prods" t-as="prod">
+                                    <tr>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span t-esc="prod.name"/>
+                                        </td>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span t-esc="prods[prod]"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <h5 style="font-size: 10px;">Resumen por impuestos</h5>
+                        <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                            <thead> 
+                                <th>Impuesto</th>
+                                <th>Base</th>
+                                <th>Total impuesto</th>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="imps" t-as="imp">
+                                    <tr>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span t-esc="imp.display_name"/>
+                                        </td>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span t-esc="imps[imp]['base']"/>
+                                        </td>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span t-esc="imps[imp]['total']"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td  style="text-align: center;" class="text-center">
+                                        <h4 style="font-size:10px; font-weight:bold; text-align:center;">Total</h4>
+                                    </td>
+                                    <td  style="text-align: center;" class="text-center">
+                                        <span t-esc="total_impuestos_base"/>
+                                    </td>
+                                    <td style="text-align: center;"  class="text-center">
+                                        <span t-esc="valor_impuestos_total"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <t t-if="len(medios) > 0">
+                            <h5 style="font-size: 10px;">Resumen por medios de pago</h5>
+                            <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                                <thead>
+                                    <th>Medio de pago</th>
+                                    <th>Total recaudado</th>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="medios" t-as="medio">
+                                        <tr>
+                                            <td  style="text-align: center;" class="text-center">
+                                                <span t-esc="medio.nombre"/>
+                                            </td>
+                                            <td  style="text-align: center;" class="text-center">
+                                                <span t-esc="medios[medio]"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+                        <t t-if="len(docs) > 0">
+                            <h5 style="font-size: 10px;">Resumen por tipo de documento</h5>
+                            <table style="width: 100%; font-size: 8px;" class="table table-sm table-bordered">
+                                <thead>
+                                    <th>Tipo Documento</th>
+                                    <th>Valor</th>
+                                    <th>Conteo</th>
+                                    <th>Cantidad</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="text-align: center;" class="text-center">
+                                            <span>TOTAL FACTURAS</span>
+                                        </td>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span t-esc="valor_factura"/>
+                                        </td>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span># DE FACTURAS</span>
+                                        </td>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span t-esc="total_facturas"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span>TOTAL NOTAS CREDITO</span>
+                                        </td>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span t-esc="valor_notas_credito"/>
+                                        </td>
+                                        <td  style="text-align: center;" class="text-center">
+                                            <span># DE NOTAS CREDITO</span>
+                                        </td>
+                                        <td   style="text-align: center;" class="text-center">
+                                            <span t-esc="total_notas_credito"/>
+                                        </td>
+                                    </tr>
+                                      
+                                   
+                                </tbody>
+                            </table>
+                        </t>
+                       
+
+                        <t t-elif="doc_inicial and doc_final">
+                            <h4 style="font-size: 10px; ">Reporte de ventas desde <span t-esc="doc_inicial"/> hasta <span t-esc="doc_final"/></h4>
+                            <h5 style="font-size: 10px;"><span class="font-weight-bold">Rango de Facturas de:</span> <span t-esc="primer_factura"/> a <span t-esc="ultima_factura"/></h5><br/>
+                            <h4>Fecha de Generación del documento:<span t-esc="fecha_generacion"/></h4>
+                            <h4>Terminal:<span t-esc="terminal"/></h4>
+                        </t>
+                        <p style="font-size: 10px;"><span class="font-weight-bold">Total facturas:</span> <span t-esc="count['facturas']"/><br/>
+                        <span class="font-weight-bold">Total notas crédito:</span> <span t-esc="count['rectificativas']"/><br/>
+                        <span class="font-weight-bold">Total de ventas:</span> $ <span t-esc="total"/></p>
+                        
+                       
+                    </div>
+                
+                    <div class="footer">
+                       <table>
+                            <tbody>
+                            <td>Página:</td>
+                            <td><span class="page"/></td>
+                            <td>/</td>
+                            <td><span class="topage"/></td>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+            </t>
+        </t>
+    </template>
+</odoo>

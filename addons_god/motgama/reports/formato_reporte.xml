@@ -1,0 +1,41 @@
+<odoo>
+    <record model="report.paperformat" id="formato_reporte">
+        <field name="name">formato.reporte</field>
+        <field name="default" eval="True"/>
+        <field name="format">Letter</field>
+        <field name="page_width">0</field>
+        <field name="page_height">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">30</field>
+        <field name="margin_right">5</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">20</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <template id="doc_header">
+        <div class="header" style="width:100%">
+            <div class="row" style="width:100%; font-size: 10px;">
+                <div class="col-3 mb4">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 45px;" alt="Logo"/>
+                </div>
+                <div class="col-3 mb4">
+                    <h6><span t-field="company.name"/></h6>
+                    <h6>Nit: <span t-field="company.vat"/></h6>
+                    <h6><span t-field="sucursal.nombre"/></h6>
+                </div>
+                <div class="col-3 mb4">
+                    <h6 class="text-right"><span t-field="company.street"/></h6>
+                    <h6 class="text-right"><span t-field="company.phone"/></h6>
+                </div>
+            </div>
+            <div class="row zero_min_height">
+                <div class="col-12">
+                    <div style="border-bottom: 1px solid black;"/>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>

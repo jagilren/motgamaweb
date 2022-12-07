@@ -1,0 +1,68 @@
+<odoo>
+    <record id="wizard_edita_recaudo" model="ir.ui.view">
+        <field name="name">Wizard Edita Recaudo</field>
+        <field name="model">motgama.wizard.editarecaudo</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="recaudo_ant_id" invisible="1"/>
+                            <field name="cliente_id" invisible="1"/>
+                            <field name="prenda_id" invisible="1"/>
+                            <field name="recaudo_ant_id" readonly="1"/>
+                            <field name="cliente_id" readonly="1"/>
+                            <field name="prenda_id" readonly="1"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="valor_restante"/>
+                        </group>
+                        <group>
+                            <field name="total_a_pagar" invisible="1"/>
+                            <field name="total_a_pagar" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="pago_ids" widget="one2many_list">
+                            <tree editable="bottom">
+                                <control>
+                                    <create string="Agregar pago"/>
+                                </control>
+                                <field name="pago_readonly" invisible="1"/>
+                                <field name="mediopago_id" domain="[('tipo','!=','abono')]" attrs="{'readonly':[('pago_readonly','=',True)]}"/>
+                                <field name="valor" attrs="{'readonly':[('pago_readonly','=',True)]}"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="recaudar" string="Nuevo recaudo" type="object" class="btn btn-primary"/>
+                    <button special="cancel" string="Cancelar" class="btn"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="wizard_anula_recaudo" model="ir.ui.view">
+        <field name="name">Wizard Anula Recaudo</field>
+        <field name="model">motgama.wizard_anula_recaudo</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="tipo_anulacion" widget="radio"/>
+                </group>
+                <group>
+                    <field name="descripcion" nolabel="1"/>
+                </group>
+                <footer>
+                    <button name="anular" string="Anular" type="object" class="btn btn-primary"/>
+                    <button special="cancel" string="Cancelar" class="btn"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

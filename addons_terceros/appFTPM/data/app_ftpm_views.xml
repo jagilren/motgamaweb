@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="/appFTPM/static/src/css/estilo.css" ?>
+<openerp>
+<template id="app_ftpm_assets" name="app_ftpm_files" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/appFTPM/static/src/css/estilo.css"/>
+        </xpath>
+</template>
+    <data>
+        <record id="app_ftpm_tree_view" model="ir.ui.view">
+            <field name="name">app.ftpm.tree</field>
+            <field name="model">app.ftpm</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="server"></field>
+                    <field name="puerto"></field>
+                    <field name="user"></field>
+                    <field name="pass_user" password="True"></field>
+                    <field name="resultado"></field>
+                </tree>
+            </field>
+        </record>
+
+        <record id="app_ftpm_form_view" model="ir.ui.view">
+            <field name="name">app.ftpm.form</field>
+            <field name="model">app.ftpm</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="conect_server_ftp" class="conectar_server" type="object" string="Conectar al Servidor"/>
+                        <button name="list_files_directory" class="btn_list_directory"  type="object" string="Listar Archivos del Servidor"/>
+                        <button name="download_files" class="btn_download_files" type="object" string="Descargar Archivo del Servidor"/>
+                        <button name="upload_file" class="btn_upload_file" type="object" string="Subir Archivo al Servidor"/>
+                        <button name="delete_file" class="btn_delete_file"  type="object" string="Eliminar Archivo Servidor"/>
+                        <button name="close_connection" class="btn_close_connection" type="object" string="Cerrar Conexión del Servidor"/>
+                        <button name="list_local_files" class="btn_local_files" type="object" string="Listar Directorio Local"/>
+                        <button name="delete_local_files" class="btn_delete_local_files" type="object" string="Eliminar Archivo Local"/>
+                    </header>
+                    <sheet>
+                        <notebook class="ftp_page">
+                            <page string="Servidor" >
+                                <group>
+                                    <field name="default"></field>
+                                    <field name="regla_negocio"></field>
+                                    <field name="server" ></field>
+                                    <field name="puerto" ></field>
+                                    <field name="user" ></field>
+                                    <field name="pass_user" password="True"></field>
+                                    <field name="pass_zip" password="True"></field>
+                                   <!-- <field name="conexion"></field>-->
+                                    <field name="ssl_certif"></field>
+                                    <field name="directory_save"></field>
+                                    <field name="save_name"></field>
+                                    <field name="resultado"></field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <sheet>
+                        <notebook class="local_page">
+                            <page string="Local">
+                                <group>
+                                    <field name="directory_save_local"></field>
+                                    <field name="save_name_local"></field>
+                                    <field name="resultado_local"></field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        
+
+
+    </data>
+</openerp>

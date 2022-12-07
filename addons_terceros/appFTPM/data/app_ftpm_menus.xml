@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <menuitem id="test_main_menu" name="FTP"/>
+
+        <menuitem id="test_sub_menu" name="Sub Menu" parent="test_main_menu"/>
+
+        <record id="app_ftpm_action" model="ir.actions.act_window">
+            <field name="name">FTPM</field>
+            <field name="res_model">app.ftpm</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="app_ftpm_root" parent="test_sub_menu" action="app_ftpm_action" name="ftpmModel"/>        
+    </data>
+</openerp>

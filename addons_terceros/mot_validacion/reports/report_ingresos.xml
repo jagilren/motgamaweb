@@ -1,0 +1,123 @@
+<odoo>
+    <report id="report_ingresos"
+        model="motgama.mot_validacion.report"
+        string="Reporte de Ingresos"
+        report_type="qweb-pdf"
+        name="mot_validacion.reporte_ingresos"/>
+
+    <template id="reporte_ingresos">
+        <t t-call="web.html_container">
+            <div class="header">
+                <h4><span t-esc="razon_alias"></h4>
+            </div>
+            <div class="page">
+                <t t-if="fecha_inicial and fecha_final">
+                    <h5>Comprobante informe diario desde <span t-esc="docs[0].fecha_inicial"/> hasta <span t-esc="docs[0].fecha_final"/></h5>
+                </t>
+                <t t-elif="doc_inicial and doc_final">
+                    <h5>Comprobante informe diario desde <span t-esc="docs[0].doc_inicial"/> hasta <span t-esc="docs[0].doc_final"/></h5>
+                </t>
+                <table style="width: 100%">
+                    <thead>
+                        <th class="text-center" style="width: 15%">Fecha</th>
+                        <th class="text-center" style="width: 14%">Documento</th>
+                        <th class="text-center" style="width: 14%">Cliente</th>
+                        <th class="text-center" style="width: 14%">Habitación</th>
+                        <th class="text-center" style="width: 14%">Valor Total</th>
+                        <th class="text-center" style="width: 15%">Medio de pago</th>
+                        <th class="text-center" style="width: 14%">Usuario</th>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="docs" t-as="doc">
+                            <tr>
+                                <td class="text-center">
+                                    <span t-field="doc.fecha"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="doc.fac"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="doc.cliente"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="doc.habitacion"/>
+                                </td>
+                                <td class="text-center">
+                                    $ <span t-field="doc.valor"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="doc.medio_pago"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="doc.usuario"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <br/>
+                <h5>Resumen por categoría</h5>
+                <table style="width: 100%">
+                    <thead>
+                        <th>Categoría</th>
+                        <th>Total</th>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="prods" t-as="prod">
+                            <tr>
+                                <td class="text-center">
+                                    <span t-esc="prod"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="prods[prod]"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <br/>
+                <h5>Otros rec.</h5>
+                <table style="width: 100%">
+                    <thead>
+                        <th>Nombre</th>
+                        <th>Total</th>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="imps" t-as="imp">
+                            <tr>
+                                <td class="text-center">
+                                    <span t-esc="imp"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="imps[imp]"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <h5>Resumen por medios</h5>
+                <table style="width: 100%">
+                    <thead>
+                        <th>Medio</th>
+                        <th>Total</th>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="medios" t-as="medio">
+                            <tr>
+                                <td class="text-center">
+                                    <span t-esc="medio.nombre"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="medios[medio]"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <br/>
+                <p><span class="font-weight-bold">Total documentos:</span> <span t-esc="count"/><br/>
+                <span class="font-weight-bold">Total:</span> $ <span t-esc="total"/></p>
+            </div>
+        </t>
+    </template>
+</odoo>

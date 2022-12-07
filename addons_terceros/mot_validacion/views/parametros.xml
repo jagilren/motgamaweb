@@ -1,0 +1,83 @@
+<odoo>
+    <record id="tree_view_parametros" model="ir.ui.view">
+        <field name="name">Tree Parámetros</field>
+        <field name="model">mot_validacion.parametro</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="nombre"/>
+                <field name="descripcion"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="form_view_parametros" model="ir.ui.view">
+        <field name="name">Form View Parámetros</field>
+        <field name="model">mot_validacion.parametro</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="nombre" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="descripcion"/>
+                    </group>
+                    <group attrs="{'invisible':[('nombre','in',['%PONDERACIONxDESCONTABLE'])]}">
+                        <field name="prod_categ_ids" widget="many2many_tags" attrs="{'invisible':[('nombre','not in',['BORRABLES','COMODIN','CATEGORIA_INTERCAMBIABLE','CATEGORIA_NO_ORPHAN'])]}"/>
+                        <field name="producto_ids" widget="many2many_tags" attrs="{'invisible':[('nombre','not in',['BORRABLES','COMODIN'])]}"/>
+                        <field name="mediopago_ids" widget="many2many_tags" attrs="{'invisible':[('nombre','not in',['MEDIOS_BORRABLES'])]}"/>
+                        <field name="valor_boolean" attrs="{'invisible':[('nombre','not in',['FACTURA_ANOMALIA','DETALLE_DCTO_FACT_HOSPEDAJE','DETALLE_DCTO_FACT_INVENTARIOS'])]}"/>
+                        <field name="reduc_hospedaje" attrs="{'invisible':[('nombre','not in',['%REDUCCIONxHOSPEDAJE'])]}">
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="tipo_id"/>
+                                <field name="porcentaje"/>
+                            </tree>
+                        </field>
+                        <!--<field name="valor_int" string="Porcentaje máximo permitido" help="Este valor se toma únicamente si no fue posible alcanzar la meta establecida para los borrables" attrs="{'invisible':[('nombre','not in',['%REDUCCIONxHOSPEDAJE'])]}"/>-->
+                        <field name="reduc_inventario" attrs="{'invisible':[('nombre','not in',['%REDUCCIONxINVENTARIO'])]}">
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="categ_id"/>
+                                <field name="porcentaje"/>
+                            </tree>
+                        </field>
+                        <field name="valor_int" string="Porcentaje máximo permitido" help="Este valor se toma únicamente si no fue posible alcanzar la meta establecida para los borrables y/o los hospedajes" attrs="{'invisible':[('nombre','not in',['%REDUCCIONxINVENTARIO'])]}"/>
+                        <field name="valor_char" attrs="{'invisible':[('nombre','not in',['HORA_INICIO_PROCESO','RAZON_ALIAS','FRASE_OVERRIDE_HAB','EMAIL_ALERTAS'])]}"/>
+                        <field name="valor_float" attrs="{'invisible':[('nombre','not in',['PERIODICIDAD_PROCESO','ROLLBACK_MAX','STORE_ROLLBACK','PERIOD_DEL_ROLLBACK'])]}"/>
+                        <field name="valor_int" attrs="{'invisible':[('nombre','not in',['%REDUCCION'])]}"/>
+                        <field name="porc_error" attrs="{'invisible':[('nombre','not in',['%REDUCCION'])]}"/>
+                        <field name="paso_reduc" attrs="{'invisible':[('nombre','not in',['%REDUCCION'])]}"/>
+                        <field name="alias_impuestos" attrs="{'invisible':[('nombre','not in',['ALIAS_IMPUESTO'])]}">
+                            <tree editable="bottom">
+                                <field name="impuesto_id"/>
+                                <field name="alias"/>
+                            </tree>
+                        </field>
+                        <field name="alias_categorias" attrs="{'invisible':[('nombre','not in',['ALIAS_CATEGORIA'])]}">
+                            <tree editable="bottom">
+                                <field name="categ_id"/>
+                                <field name="alias"/>
+                            </tree>
+                        </field>
+                        <field name="prod_desc_hosp" attrs="{'invisible':[('nombre','not in',['PROD_DESC'])]}"/>
+                        <field name="prod_desc_inven" attrs="{'invisible':[('nombre','not in',['PROD_DESC'])]}"/>
+                        <field name="redondeo" attrs="{'invisible':[('nombre','not in',['REDONDEO'])],'required':[('nombre','in',['REDONDEO'])]}"/>
+                    </group>
+                    <group attrs="{'invisible':[('nombre','not in',['%PONDERACIONxDESCONTABLE'])]}">
+                        <group>
+                            <field name="borrables" attrs="{'invisible':[('nombre','not in',['%PONDERACIONxDESCONTABLE'])]}"/>
+                            <field name="hospedaje" attrs="{'invisible':[('nombre','not in',['%PONDERACIONxDESCONTABLE'])]}"/>
+                            <field name="inventario" attrs="{'invisible':[('nombre','not in',['%PONDERACIONxDESCONTABLE'])]}"/>
+                        </group>
+                        <group>
+                            <field name="techo_borrables" attrs="{'invisible':[('nombre','not in',['%PONDERACIONxDESCONTABLE'])]}"/>
+                            <field name="techo_hospedaje" attrs="{'invisible':[('nombre','not in',['%PONDERACIONxDESCONTABLE'])]}"/>
+                            <field name="techo_inventario" attrs="{'invisible':[('nombre','not in',['%PONDERACIONxDESCONTABLE'])]}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

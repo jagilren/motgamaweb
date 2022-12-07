@@ -1,0 +1,53 @@
+<odoo>
+    <record id="wizard_ajustes" model="ir.ui.view">
+        <field name="name">Wizard Ajustes</field>
+        <field name="model">mot_validacion.wizard.ajustes</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <notebook>
+                        <page string="Reducción">
+                            <group>
+                                <field name="reduc_porcentaje"/>
+                            </group>
+                        </page>
+                        <page string="Hospedaje">
+                            <group>
+                                <field name="reduc_hosp">
+                                    <tree>
+                                        <field name="tipo_id"/>
+                                        <field name="porcentaje"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Inventario">
+                            <group>
+                                <field name="reduc_inven">
+                                    <tree>
+                                        <field name="categ_id"/>
+                                        <field name="porcentaje"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+                </group>
+                <group>
+                    <field name="estado_proceso" readonly="1"/>
+                </group>
+                <footer>
+                    <button name="editar" string="Editar parámetros" type="object" class="btn btn-primary"/>
+                    <button special="cancel" string="Cancelar" class="btn"/>
+                    <span/>
+                    <button name="start" string="Iniciar proceso" type="object" class="btn btn-info"
+                        attrs="{'invisible':[('estado_proceso','=','iniciado')]}" confirm="¿Desea iniciar el proceso automatizado de llave?"/>
+                    <button name="stop" string="Detener proceso" type="object" class="btn btn-warning"
+                        attrs="{'invisible':[('estado_proceso','=','detenido')]}" confirm="¿Desea detener el proceso automatizado de llave?"/>
+                    <button name="panic" string="Emergencia" type="object" class="btn btn-danger"
+                        confirm="¿Está seguro de continuar?"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

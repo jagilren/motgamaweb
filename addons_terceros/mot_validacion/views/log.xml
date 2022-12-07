@@ -1,0 +1,94 @@
+<odoo>
+    <record id="tree_view_log" model="ir.ui.view">
+        <field name="name">Tree View Log</field>
+        <field name="model">mot_validacion.log</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="fecha"/>
+                <field name="proceso"/>
+                <field name="resultado"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="form_view_log" model="ir.ui.view">
+        <field name="name">Form View Log</field>
+        <field name="model">mot_validacion.log</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="panic" string="Panic" type="object" class="btn"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="fecha"/>
+                            <field name="proceso"/>
+                        </group>
+                        <group>
+                            <field name="resultado"/>
+                            <field name="fecha_inicial"/>
+                            <field name="fecha_final"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="doc_ids">
+                            <tree>
+                                <field name="state" invisible="1"/>
+                                <field name="number"/>
+                                <field name="partner_id" string="Cliente"/>
+                                <field name="origin"/>
+                                <field name="amount_untaxed"/>
+                                <field name="amount_tax"/>
+                                <field name="amount_total"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="rollback_ids" attrs="{'invisible':[('proceso','=','rollback')]}">
+                            <tree>
+                                <field name="invoice_id"/>
+                                <field name="cliente"/>
+                                <field name="doc"/>
+                                <field name="base"/>
+                                <field name="impuestos"/>
+                                <field name="total"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="tree_view_log_reduccion" model="ir.ui.view">
+        <field name="name">Tree View Log Reducción</field>
+        <field name="model">mot_validacion.log.reduccion</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="fecha"/>
+                <field name="reduc_max"/>
+                <field name="reduc_param"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="form_view_log_reduccion" model="ir.ui.view">
+        <field name="name">Form View Log Reducción</field>
+        <field name="model">mot_validacion.log.reduccion</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="fecha"/>
+                        <field name="log_id"/>
+                    </group>
+                    <group>
+                        <field name="reduc_max"/>
+                        <field name="reduc_param"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

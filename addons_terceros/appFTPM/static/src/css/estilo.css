@@ -1,0 +1,65 @@
+
+
+.conectar_server{
+    background-color: rgba(35, 226, 108, 0.133);
+    color:black;
+    font-weight: bold;
+    margin-left:40% !important;
+    margin-right:40% !important;
+    margin:center;
+    justify-content: center;
+    padding:15px !important;
+}
+
+.btn_close_connection{
+    background-color: rgba(238, 122, 93, 0.133);
+    color:black;
+    font-weight: bold;
+    margin-left:40% !important;
+    margin-right:40% !important;
+    padding:15px !important;
+    margin:center;
+    justify-content: center;
+    margin-bottom: 50px !important;
+}
+
+.ftp_page{
+    background-color: rgb(255, 255, 193) !important;
+    padding:10px !important;
+    border-radius:5px;
+}
+
+.conectar_server button{
+    background-color: blue !important;
+    color:red !important;
+}
+
+.local_page{
+    background-color: rgb(203, 219, 248) !important;
+    padding:10px !important;
+    border-radius:5px;
+}
+
+.btn_list_directory{
+    background-color: rgb(255, 255, 193) !important;
+}
+
+.btn_download_files{
+    background-color: rgb(255, 255, 193) !important;
+}
+
+.btn_upload_file{
+    background-color: rgb(255, 255, 193) !important;
+}
+
+.btn_delete_file{
+    background-color: rgb(255, 194, 193) !important;
+}
+
+.btn_delete_local_files{
+    background-color: rgb(203, 219, 248) !important;
+}
+
+.btn_local_files{
+    background-color: rgb(203, 219, 248) !important;
+}
