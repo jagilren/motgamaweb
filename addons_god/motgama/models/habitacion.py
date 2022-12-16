@@ -109,7 +109,7 @@ class MotgamaFlujoHabitacion(models.Model):#adicionada por Gabriel sep 10
                 'res_model': 'motgama.flujohabitacion',
                 'name': 'Habitaciones: Todas las recepciones',
                 'view_mode': 'kanban,form',
-                'limit': 100
+                'limit': 200
             }
         if not self.env.user.recepcion_id:
             return {
@@ -589,6 +589,10 @@ class MotgamaFlujoHabitacion(models.Model):#adicionada por Gabriel sep 10
                         producto = self.env['product.template'].search([('default_code','=',param_bono.valor)],limit=1)
                 else:
                     producto = self.env['product.template'].search([('default_code','=',param_bono.valor)],limit=1)
+                _logger.info("producto name:")
+                _logger.info(producto)
+                _logger.info("linea ocasional name:")
+                _logger.info(lineaOcasional.name)
                 valores_bono = {
                     'customer_lead' : 0,
                     'name' : producto.name + ': ' + lineaOcasional.name,

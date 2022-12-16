@@ -853,10 +853,13 @@ class Validacion(models.TransientModel):
             rollbacks = []
             valor_descontado = 0.0
             
+            
             # Se crean los rollback de facturas
             for factura in facturas:
                 valores_linea = []
                 for line in factura.invoice_line_ids:
+                    _logger.info("cantidad q")
+                    _logger.info(line.quantity)
                     valores = {
                         'line_id': line.id,
                         'producto': line.product_id.id,
@@ -942,6 +945,8 @@ class Validacion(models.TransientModel):
                         raise Warning('No fue posible generar registros para el rollback')
                 recibo.sudo().write({'invoice_id': rollback.id})
                 rollbacks.append(rollback.id)
+
+            for factura in facturas: 
 
                 borrables = []
                 hospedaje = {}
@@ -1090,6 +1095,9 @@ class Validacion(models.TransientModel):
                             })
                             valor_descontado += hospedaje[line]
                 # El proceso continúa con la lista de líneas de productos inventariables
+                _logger.info("len inventario")
+                _logger.info(len(inventario))
+
                 for line in inventario:
                     # Si el parámetro de agregar detalle de descuento en inventario es verdadero se crea una línea descontando el valor a reducir del producto
                     if self.env.ref('mot_validacion.parametro_DETALLE_DCTO_FACT_INVENTARIOS').valor_boolean:

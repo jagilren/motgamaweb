@@ -31,6 +31,6 @@ class StockPicking(models.Model):
         if not self.env.ref('motgama.motgama_desbloquear_inventario') in self.env.user.permisos:
             raise Warning('No tiene permitido desbloquear inventario, contacte al administrador')
 
-    
+
 
     

@@ -115,7 +115,7 @@ class PDFReporteTipoTransaccion(models.AbstractModel):
                 tipos[doc.tipo_transaccion]['docs'].append(doc)
                 if doc.categoria in tipos[doc.tipo_transaccion]['categorias']:
                     tipos[doc.tipo_transaccion]['categorias'][doc.categoria]['cantidad']+=doc.cantidad
-                    tipos[doc.tipo_transaccion]['categorias'][doc.categoria]['valor_unitario']+=doc.valor_unitario
+                    tipos[doc.tipo_transaccion]['categorias'][doc.categoria]['valor_unitario']+=doc.valor_unitario 
                     tipos[doc.tipo_transaccion]['categorias'][doc.categoria]['valor_total']+=doc.valor_total
                     tipos[doc.tipo_transaccion]['categorias'][doc.categoria]['impuesto']+=doc.impuesto_total
                     tipos[doc.tipo_transaccion]['categorias'][doc.categoria]['valor_total_general']+=doc.valor_total_general
@@ -173,12 +173,14 @@ class PDFReporteTipoTransaccion(models.AbstractModel):
             tipos[tipo]['totales']['valor_total_general'] = "$ {:0,.2f}".format( tipos[tipo]['totales']['valor_total_general']).replace(',','¿').replace('.',',').replace('¿','.')
 
             for categoria in tipos[tipo]['categorias']:
+                if docs[0].resumido:
+                    tipos[tipo]['categorias'][categoria]['valor_unitario'] =  tipos[tipo]['categorias'][categoria]['valor_total'] /  tipos[tipo]['categorias'][categoria]['cantidad']
+            
                 tipos[tipo]['categorias'][categoria]['valor_unitario']="$ {:0,.2f}".format(tipos[tipo]['categorias'][categoria]['valor_unitario']).replace(',','¿').replace('.',',').replace('¿','.')
                 tipos[tipo]['categorias'][categoria]['valor_total']="$ {:0,.2f}".format(tipos[tipo]['categorias'][categoria]['valor_total']).replace(',','¿').replace('.',',').replace('¿','.')
                 tipos[tipo]['categorias'][categoria]['impuesto']="$ {:0,.2f}".format(tipos[tipo]['categorias'][categoria]['impuesto']).replace(',','¿').replace('.',',').replace('¿','.')
                 tipos[tipo]['categorias'][categoria]['valor_total_general']="$ {:0,.2f}".format( tipos[tipo]['categorias'][categoria]['valor_total_general']).replace(',','¿').replace('.',',').replace('¿','.')
 
-        
         
 
         return {
