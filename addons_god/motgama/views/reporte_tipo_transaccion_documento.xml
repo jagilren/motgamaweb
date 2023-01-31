@@ -10,6 +10,7 @@
                         <field name="fecha_inicial"/>
                         <field name="fecha_final"/>
                         <field name="filtro_transaccion" widget="many2many_checkboxes"/>
+                        <field name="conImpuesto"/>
                     </group>
                 </sheet>
                 <footer>

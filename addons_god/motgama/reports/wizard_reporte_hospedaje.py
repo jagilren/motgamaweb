@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import Warning
+from datetime import datetime, timedelta
 
 class WizardReporteHospedaje(models.TransientModel):
     _name = 'motgama.wizard.reportehospedaje'
@@ -56,13 +57,22 @@ class WizardReporteHospedaje(models.TransientModel):
             if not factura:
                 continue
 
+            fecha_inicial = self.fecha_inicial - timedelta(hours=5)
+            fecha_inicial_format = datetime(fecha_inicial.year,fecha_inicial.month,fecha_inicial.day,fecha_inicial.hour,fecha_inicial.minute, fecha_inicial.second)
+
+            fecha_final = self.fecha_final - timedelta(hours=5)
+            fecha_final_format = datetime(fecha_final.year,fecha_final.month,fecha_final.day,fecha_final.hour,fecha_final.minute, fecha_final.second)
+
+            fecha_mov = movimiento.asignafecha - timedelta(hours=5) 
+            fecha_mov_format = datetime(fecha_mov.year,fecha_mov.month,fecha_mov.day,fecha_mov.hour,fecha_mov.minute, fecha_mov.second)
+
             for line in factura.invoice_line_ids:
                 valores = {
-                    'fecha_inicial': self.fecha_inicial,
-                    'fecha_final': self.fecha_final,
+                    'fecha_inicial': fecha_inicial_format,
+                    'fecha_final': fecha_final_format,
                     'recepcion_reporte': self.recepcion.nombre if self.recepcion else False,
                     'recepcion': movimiento.habitacion_id.zona_id.recepcion_id.nombre,
-                    'fecha': movimiento.asignafecha,
+                    'fecha': fecha_mov_format,
                     'habitacion': movimiento.habitacion_id.codigo,
                     'usuario': movimiento.recauda_uid.name
                 }

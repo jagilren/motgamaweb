@@ -158,17 +158,32 @@ class Validacion(models.TransientModel):
                 borrables['aporte'] = roundToLow(borrables['meta'] * porc_borr / 100,redondeo)
                 hospedajes['aporte'] = roundToLow(hospedajes['meta'] * porc_hosp / 100,redondeo)
                 inventarios['aporte'] = roundToLow(inventarios['meta'] * porc_inven / 100,redondeo)
+                _logger.info("inventarios meta")
+                _logger.info(inventarios['meta'])
                 
                 meta = borrables['meta'] + hospedajes['meta'] + inventarios['meta']
+                _logger.info("meta antes de llegar")
+                _logger.info(meta)
+                _logger.info("porc reduc antes de llegar")
+                _logger.info(porc_reduc)
+                _logger.info("redondeo antes de llegar")
+                _logger.info(redondeo)
                 landvalue = roundToLow(meta * porc_reduc / 100, redondeo)
+                _logger.info("land value despues del proceso")
+                _logger.info(landvalue)
                 sum_aportes = borrables['aporte'] + hospedajes['aporte'] + inventarios['aporte']
+                _logger.info("sum_aportes")
+                _logger.info(sum_aportes)
 
                 # Iterar para acercarse al techo de reducción
                 porc_error = self.env.ref('mot_validacion.parametro_REDUCCION').porc_error
                 val_error = landvalue * porc_error / 100
                 paso_reduc = self.env.ref('mot_validacion.parametro_REDUCCION').paso_reduc
                 en_techo_hosp = False
+                _logger.info("land value")
+                _logger.info(landvalue)
                 while paso_reduc > 0 and sum_aportes < landvalue - val_error:
+                    _logger.info("Entre al while")
                     if porc_borr < techo_borr:
                         if porc_borr + paso_reduc < techo_borr:
                             porc_borr += paso_reduc
@@ -205,7 +220,15 @@ class Validacion(models.TransientModel):
 
                     sum_aportes = borrables['aporte'] + hospedajes['aporte'] + inventarios['aporte']
                     meta = borrables['meta'] + hospedajes['meta'] + inventarios['meta']
+                    _logger.info("Meta")
+                    _logger.info(meta)
+                    _logger.info("porc_reduc")
+                    _logger.info(porc_reduc)
+                    _logger.info("redondeo")
+                    _logger.info(redondeo)
                     landvalue = roundToLow(meta * porc_reduc / 100,redondeo)
+                    _logger.info("resultado land value")
+                    _logger.info(landvalue)
 
                 _logger.info(hospedajes['lines'].ids)
                 record.loading = False
@@ -461,15 +484,27 @@ class Validacion(models.TransientModel):
                 for line in inventario:
                     porc = reducinv.filtered(lambda r: r.categ_id == base_line.product_id.categ_id).porcentaje
                     meta = line.price_unit * porc / 100
+                    _logger.info("meta")
+                    _logger.info(meta)
                     aporte = meta * self.porc_inven / 100
+                    _logger.info("aporte")
+                    _logger.info(aporte)
                     new_val = roundToLow(line.price_unit - aporte,redondeo)
+                    _logger.info("new val")
+                    _logger.info(new_val)
                     if new_val <= 0:
+                        _logger.info("entre al if new val")
                         line.sudo().write({'invoice_id':False})
                     elif prod_desc_inven:
+                        _logger.info("entre al elif new val")
                         # TODO: Nueva Línea
                         pass
                     else:
+                        _logger.info("entre al else new val")
                         line.sudo().write({'price_unit': new_val})
+
+                _logger.info("meta descuento inventario")
+                _logger.info(meta)
                 
                 # Se reducen los descuentos
                 for line in factura.invoice_line_ids.filtered(lambda r: r.price_unit < 0):
@@ -846,6 +881,11 @@ class Validacion(models.TransientModel):
             meta_borr = meta_desc * porc_borr / 100
             meta_hosp = meta_desc * porc_hosp / 100
             meta_inven = meta_desc * porc_inven / 100
+            _logger.info("meta_inven")
+            _logger.info(meta_inven)
+
+            
+            
 
             desc_borr = meta_borr
             desc_hosp = meta_hosp
@@ -856,6 +896,7 @@ class Validacion(models.TransientModel):
             
             # Se crean los rollback de facturas
             for factura in facturas:
+                
                 valores_linea = []
                 for line in factura.invoice_line_ids:
                     _logger.info("cantidad q")
@@ -946,6 +987,7 @@ class Validacion(models.TransientModel):
                 recibo.sudo().write({'invoice_id': rollback.id})
                 rollbacks.append(rollback.id)
 
+            datosFactura = {}
             for factura in facturas: 
 
                 borrables = []
@@ -955,11 +997,14 @@ class Validacion(models.TransientModel):
                 # Se inicia el proceso de reducción
                 for line in factura.invoice_line_ids:
                     _logger.info('entro al for line')
+                    _logger.info(line)
                     # Si la línea es de un descuento la ignora, se procesa junto con la línea anteriormente relacionadas
                     if line.price_unit < 0:
+                        _logger.info("entro a primer if")
                         continue
                     # Si la línea tiene un producto borrable, la agrega a la lista borrables junto con su descuento
                     if desc_borr > 0 and (line.product_id in prodsborrables or line.product_id.categ_id in categborrables):
+                        _logger.info("entro a segundo if")
                         borrables.append(line)
                         desc_borr -= line.quantity * line.price_unit
                         for desc_line in line.desc_line_ids:
@@ -967,6 +1012,7 @@ class Validacion(models.TransientModel):
                             desc_borr += abs(line.quantity * desc_line.price_unit)
                     # Si la línea es de hospedaje, la agrega a la lista de hospedaje con el valor a descontar según el tipo de habitación
                     elif desc_hosp > 0 and line.product_id in [prod_amanecida,prod_ocasional]:
+                        _logger.info("entro a primer elif")
                         reduc = 0
                         porc = 1
                         for tipo in reduchosp:
@@ -983,11 +1029,15 @@ class Validacion(models.TransientModel):
                             desc_hosp += desc_desc
                     # Si la línea es de un producto inventariable, la agrega a la lista de inventario con el valor a descontar según la categoría del producto
                     # esta asi elif desc_inven > 0 and line.product_id.categ_id in reducinv.mapped('categ_id'):
+                    
                     elif line.product_id.categ_id in reducinv.mapped('categ_id'):
+                        _logger.info("list mapped categ id")
+                        _logger.info(reducinv.mapped('categ_id'))
                         reduc = 0
                         porc = 0
                         for inv in reducinv:
                             if line.product_id.categ_id == inv.categ_id:
+                                _logger.info("entro a descontar")
                                 porc = inv.porcentaje / 100
                                 reduc = line.price_unit * porc
                                 break
@@ -1139,58 +1189,73 @@ class Validacion(models.TransientModel):
                 # Si la factura quedó en un estado incoherente (Sin líneas o en valor total 0 o negativo) se revisa si es posible intercambiar productos con otras facturas
                 _logger.info("Numero de lineas")
                 _logger.info(len(factura.invoice_line_ids))
+                _logger.info("Estado de factura")
+                _logger.info(factura.state)
+                datosFactura[factura]={'pagos':pagos, 'payments':payments}
+
+            for factura in facturas:
+                _logger.info("Estado2 de factura")
+                _logger.info(factura.state)
                 if len(factura.invoice_line_ids) == 0 or factura.amount_total <= 0:
                     _logger.info("primer if factura.invoice linea ids")
                     for invoice in facturas:
                         linea = False
                         lineas_desc = []
+                        nameProducts = {}
+                        totalQuantity = 0
+                        for line in invoice.invoice_line_ids:
+                            totalQuantity += line.quantity
+
+
+                        
                         for line in invoice.invoice_line_ids:
                             if line.product_id.categ_id in categintercambiables:
-                                if line.quantity > 1:
-                                    if line.desc_line_ids and len(line.desc_line_ids)==1 and line.desc_line_ids[0].quantity==line.quantity:
-                                        val_line_desc = {
-                                        'product_id':line.desc_line_ids[0].product_id.id,
-                                        'name':line.desc_line_ids[0].name,
-                                        'account_id':line.desc_line_ids[0].account_id.id,
-                                        'quantity':1,
-                                        'price_unit':line.desc_line_ids[0].price_unit,
-                                        'invoice_line_tax_ids':[(6,0,line.desc_line_ids[0].invoice_line_tax_ids.ids)]
-                                        }
-                                        factura.sudo().write({'invoice_line_ids':[(0,0,val_line_desc)]})
-                                        line.desc_line_ids[0].sudo().write({'quantity':line.desc_line_ids[0].quantity-1})
-                                        val_line = {
-                                        'product_id':line.product_id.id,
-                                        'name':line.name,
-                                        'account_id':line.account_id.id,
-                                        'quantity':1,
-                                        'price_unit':line.price_unit,
-                                        'invoice_line_tax_ids':[(6,0,line.invoice_line_tax_ids.ids)]
-                                        }
-                                        factura.sudo().write({'invoice_line_ids':[(0,0,val_line)]})
-                                        line.sudo().write({'quantity':line.quantity-1})
+                                if totalQuantity > 1:
+                                    if line.quantity > 1:
+                                        if line.desc_line_ids and len(line.desc_line_ids)==1 and line.desc_line_ids[0].quantity==line.quantity:
+                                            val_line_desc = {
+                                            'product_id':line.desc_line_ids[0].product_id.id,
+                                            'name':line.desc_line_ids[0].name,
+                                            'account_id':line.desc_line_ids[0].account_id.id,
+                                            'quantity':1,
+                                            'price_unit':line.desc_line_ids[0].price_unit,
+                                            'invoice_line_tax_ids':[(6,0,line.desc_line_ids[0].invoice_line_tax_ids.ids)]
+                                            }
+                                            factura.sudo().write({'invoice_line_ids':[(0,0,val_line_desc)]})
+                                            line.desc_line_ids[0].sudo().write({'quantity':line.desc_line_ids[0].quantity-1})
+                                            val_line = {
+                                            'product_id':line.product_id.id,
+                                            'name':line.name,
+                                            'account_id':line.account_id.id,
+                                            'quantity':1,
+                                            'price_unit':line.price_unit,
+                                            'invoice_line_tax_ids':[(6,0,line.invoice_line_tax_ids.ids)]
+                                            }
+                                            factura.sudo().write({'invoice_line_ids':[(0,0,val_line)]})
+                                            line.sudo().write({'quantity':line.quantity-1})
+                                            break
+                                        elif not line.desc_line_ids:
+                                            val_line = {
+                                            'product_id':line.product_id.id,
+                                            'name':line.name,
+                                            'account_id':line.account_id.id,
+                                            'quantity':1,
+                                            'price_unit':line.price_unit,
+                                            'invoice_line_tax_ids':[(6,0,line.invoice_line_tax_ids.ids)]
+                                            }
+                                            factura.sudo().write({'invoice_line_ids':[(0,0,val_line)]})
+                                            line.sudo().write({'quantity':line.quantity-1})
+                                            break
+                                        
+                                    elif line.desc_line_ids:
+                                        if len(invoice.invoice_line_ids) < len(line.desc_line_ids) + 2:
+                                            break
+                                        lineas_desc.extend([linea_desc for linea_desc in line.desc_line_ids])
+                                        linea = line
                                         break
-                                    elif not line.desc_line_ids:
-                                        val_line = {
-                                        'product_id':line.product_id.id,
-                                        'name':line.name,
-                                        'account_id':line.account_id.id,
-                                        'quantity':1,
-                                        'price_unit':line.price_unit,
-                                        'invoice_line_tax_ids':[(6,0,line.invoice_line_tax_ids.ids)]
-                                        }
-                                        factura.sudo().write({'invoice_line_ids':[(0,0,val_line)]})
-                                        line.sudo().write({'quantity':line.quantity-1})
+                                    elif len(invoice.invoice_line_ids) > 1:
+                                        linea = line
                                         break
-                                    
-                                elif line.desc_line_ids:
-                                    if len(invoice.invoice_line_ids) < len(line.desc_line_ids) + 2:
-                                        break
-                                    lineas_desc.extend([linea_desc for linea_desc in line.desc_line_ids])
-                                    linea = line
-                                    break
-                                elif len(invoice.invoice_line_ids) > 1:
-                                    linea = line
-                                    break
                         
                         invoice.sudo().write({'date': invoice.date})
                         factura.sudo().write({'date': factura.date})
@@ -1275,6 +1340,8 @@ class Validacion(models.TransientModel):
                         hacer_rollback = True
                 # Se vuelven a calcular los impuestos
                 factura.sudo().compute_taxes()
+                
+
                 # Si la factura sigue siendo incoherente, se debe hacer un rollback de todas las facturas
                 if len(factura.invoice_line_ids) == 0 or factura.amount_total <= 0:
                     hacer_rollback = True
@@ -1308,27 +1375,47 @@ class Validacion(models.TransientModel):
                     _logger.info("amount_tax")
                     _logger.info(factura.amount_tax)
                     factura.action_invoice_open()
-                    for payment in payments:
+                    _logger.info("factura estado final")
+                    _logger.info(factura.state)
+                    
+                    for payment in datosFactura[factura]['payments']:
+                        _logger.info("Facturas payment estado")
+                        _logger.info(factura.state)
                         payment.sudo().write({
-                            'amount': factura.amount_total * payments[payment],
+                            'amount': factura.amount_total * datosFactura[factura]['payments'][payment],
                             'invoice_ids': [(4,factura.id)]
                         })
+                        _logger.info("Facturas payment2 estado")
+                        _logger.info(factura.state)
+                        _logger.info(payment.amount)
+                        _logger.info(factura.amount_total)
                         payment.post()
                     
-                    recibo.sudo().write({
+                    factura.recaudo.sudo().write({
                         'total_pagado': factura.amount_total,
                         'valor_pagado': factura.amount_total
                     })
-                    for pago in pagos:
-                        pago.sudo().write({'valor': factura.amount_total * pagos[pago]})
-
+                    _logger.info("facturas recibo estado")
+                    _logger.info(factura.state)
+                    for pago in datosFactura[factura]['pagos']:
+                        pago.sudo().write({'valor': factura.amount_total * datosFactura[factura]['pagos'][pago]})
+                    _logger.info("facturas pago estado")
+                    _logger.info(factura.state)
                     # Se elimina toda relación entre la factura y la orden de venta de la que venía
                     if factura.origin:
+                        
                         order = self.env['sale.order'].search([('name','=',factura.origin)],limit=1)
                         if order:
                             order.sudo().write({'invoice_ids': [(3,factura.id)]})
                         factura.sudo().write({'origin': ''})
+                        _logger.info("facturas if estado")
+                        _logger.info(factura.state)
                     
+                    _logger.info("Facturas total y cantidad")
+                    _logger.info(factura.number)
+                    _logger.info(factura.amount_total)
+                    _logger.info(len(factura.invoice_line_ids))
+
                     # Si las metas ya se cumplieron, finalizar el proceso y no modificar más facturas
                     if desc_borr <= 0 and desc_hosp <= 0 and desc_inven <= 0:
                         break
@@ -1336,6 +1423,10 @@ class Validacion(models.TransientModel):
             # Se revisa si después del proceso siguen existiendo facturas en valor 0
             facturas_cero = []
             for factura in facturas:
+                _logger.info("Facturas Totales en cantidades")
+                _logger.info(factura.number)
+                _logger.info(factura.amount_total)
+                _logger.info(len(factura.invoice_line_ids))
                 if factura.amount_total <= 0:
                     if not auto:
                         raise Warning('Ha ocurrido un error en el proceso de validación: La factura ' + factura.number + ' ha quedado en cero y ha sido necesario hacer un rollback completo')
@@ -1366,7 +1457,8 @@ class Validacion(models.TransientModel):
             
             # Todas las facturas que fueron procesadas se marcan como validadas
             for factura in facturas_all:
-                factura.sudo().write({'validada': True})
+                if not error:
+                    factura.sudo().write({'validada': True})
 
             # Se registra el log de la reducción
             valores_log_reduccion = {

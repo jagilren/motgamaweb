@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import Warning
+from datetime import datetime, timedelta
 
 class WizardReporteConsumos(models.TransientModel):
     _name = 'motgama.wizard.reporteconsumo'
@@ -158,18 +159,24 @@ class PDFReporteConsumos(models.AbstractModel):
             categorias[doc.categoria] = total
 
             totalconsumos += doc.valorTotal
+
+            
         
         for prod in productos:
             productos[prod]['valor'] = "{:0,.1f}".format(productos[prod]['valor']).replace(',','¿').replace('.',',').replace('¿','.')
         for categ in categorias:
             categorias[categ] = "{:0,.1f}".format(categorias[categ]).replace(',','¿').replace('.',',').replace('¿','.')
+        
+        hoy = datetime.now() - timedelta(hours=5)
+        hoyFormat = datetime(hoy.year,hoy.month,hoy.day,hoy.hour,hoy.minute,hoy.second)
+         
             
         return {
             'company': docs[0].company,
             'sucursal': self.env['motgama.sucursal'].search([],limit=1),
             'tipo_reporte': docs[0].tipo_reporte,
             'tipos_reporte': self.tipos_reporte,
-            'hoy': fields.Datetime().now(),
+            'hoy': str(hoyFormat),
             'recepcion_reporte': docs[0].recepcion_reporte,
             'docs': docs,
             'productos': productos,

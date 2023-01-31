@@ -17,9 +17,9 @@
                                 <tbody>
                                     <tr>
                                         <td><h4 style="font-size: 10px; ">FECHA INICIAL</h4></td>
-                                        <td><h4 style="font-size: 10px; "><span t-field="fecha_inicial"/></h4></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="fecha_inicial"/></h4></td>
                                         <td><h4 style="font-size: 10px; ">FECHA FINAL</h4></td>
-                                        <td><h4 style="font-size: 10px; "><span t-field="fecha_final"/></h4></td>
+                                        <td><h4 style="font-size: 10px; "><span t-esc="fecha_final"/></h4></td>
                                         <td><h5 style="font-size: 10px;">FECHA GENERACIÓN:</h5></td>
                                         <td><h4 style="font-size: 10px; "><span t-esc="fecha_generacion"/></h4></td>
                                     </tr>

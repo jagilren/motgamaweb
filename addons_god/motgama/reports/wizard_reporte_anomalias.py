@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import Warning
+from datetime import datetime, timedelta
 
 class MotgamaWizardReporteAnomalias(models.TransientModel):
     _name = 'motgama.wizard.reporteanomalias'
@@ -44,13 +45,22 @@ class MotgamaWizardReporteAnomalias(models.TransientModel):
         for o in reporte:
             o.unlink()
         
+        fecha_anomalia = facturas[0].fecha_anomalia - timedelta(hours=5)
+        fecha_anomalia_format = datetime(fecha_anomalia.year,fecha_anomalia.month,fecha_anomalia.day,fecha_anomalia.hour,fecha_anomalia.minute, fecha_anomalia.second)
+
+        fecha_inicial = self.fecha_inicial 
+        fecha_inicial_format = datetime(fecha_inicial.year,fecha_inicial.month,fecha_inicial.day,fecha_inicial.hour,fecha_inicial.minute, fecha_inicial.second)
+
+        fecha_final =self.fecha_final 
+        fecha_final_format = datetime(fecha_final.year,fecha_final.month,fecha_final.day,fecha_final.hour,fecha_final.minute, fecha_final.second)
+
         for factura in facturas:
             valores = {
-                'fecha_inicial': self.fecha_inicial,
-                'fecha_final': self.fecha_final,
+                'fecha_inicial': fecha_inicial_format,
+                'fecha_final': fecha_final_format,
                 'numero': factura.number,
                 'fecha_factura': factura.date_invoice,
-                'fecha_anomalia': factura.fecha_anomalia,
+                'fecha_anomalia': fecha_anomalia_format,
                 'motivo_anomalia': factura.motivo_anomalia
             }
             reporte = self.env['motgama.reporteanomalias'].create(valores)
@@ -82,8 +92,14 @@ class PDFReporteAnomalias(models.AbstractModel):
     def _get_report_values(self,docids,data=None):
         docs = self.env['motgama.reporteanomalias'].browse(docids)
 
+        fecha_inicial = docs[0].fecha_inicial - timedelta(hours=5)
+        fecha_inicial_format = datetime(fecha_inicial.year,fecha_inicial.month,fecha_inicial.day,fecha_inicial.hour,fecha_inicial.minute, fecha_inicial.second)
+
+        fecha_final = docs[0].fecha_final - timedelta(hours=5)
+        fecha_final_format = datetime(fecha_final.year,fecha_final.month,fecha_final.day,fecha_final.hour,fecha_final.minute, fecha_final.second)
+
         return {
             'docs': docs,
-            'fecha_inicial': docs[0].fecha_inicial,
-            'fecha_final': docs[0].fecha_final
+            'fecha_inicial': fecha_inicial_format,
+            'fecha_final': fecha_final_format
         }

@@ -62,7 +62,12 @@
                                             <td style="text-align:center; "><span t-field="doc.cantidad"></span></td>
                                             <td style="text-align:center;"><span t-field="doc.valor_unitario"></span></td>
                                             <td style="text-align:center;"><span t-field="doc.valor_total"></span></td>
-                                            <td style="text-align:center;"><span t-field="doc.impuesto_total"></span></td>
+                                            <t t-if="conImpuesto">
+                                                <td style="text-align:center;"><span t-field="doc.impuesto_total"></span></td>
+                                            </t>
+                                            <t t-else="">
+                                                <td style="text-align:center;"><span>$ 0</span></td>    
+                                            </t>
                                             <td style="text-align:center;"><span t-field="doc.valor_total_general"></span></td>
                                             <td style="text-align:center;"><span t-field="doc.usuario"></span></td>
                                             </tr>
@@ -77,7 +82,13 @@
                                         <td style="text-align:center;"><span t-esc="tipos[tipo]['documentos'][dcto]['totales']['cantidad']"/></td>
                                         <td style="text-align:center;"><span t-esc="tipos[tipo]['documentos'][dcto]['totales']['valor_unitario']"/></td>
                                         <td style="text-align:center; "><span t-esc="tipos[tipo]['documentos'][dcto]['totales']['valor_total']"/></td>
-                                        <td style="text-align:center;"><span t-esc="tipos[tipo]['documentos'][dcto]['totales']['impuesto']"/></td>
+                                        <t t-if="tipos[tipo]['documentos'][dcto]['totales']['valor_total']"></t>
+                                        <t t-if="conImpuesto">
+                                            <td style="text-align:center;"><span t-esc="tipos[tipo]['documentos'][dcto]['totales']['impuesto']"/></td>
+                                        </t>
+                                        <t t-else="">
+                                            <td style="text-align:center;"><span>$ 0</span></td>    
+                                        </t>
                                         <td style="text-align:center; "><span t-esc="tipos[tipo]['documentos'][dcto]['totales']['valor_total_general']"/></td>
                                         <td></td>
                                     </tr>
@@ -88,7 +99,12 @@
                                         <td style="text-align:center;"><span t-esc="tipos[tipo]['totales']['cantidad']"/></td>
                                         <td style="text-align:center;"><span t-esc="tipos[tipo]['totales']['valor_unitario']"/></td>
                                         <td style="text-align:center; "><span t-esc="tipos[tipo]['totales']['valor_total']"/></td>
-                                        <td style="text-align:center;"><span t-esc="tipos[tipo]['totales']['impuesto']"/></td>
+                                        <t t-if="conImpuesto">
+                                            <td style="text-align:center;"><span t-esc="tipos[tipo]['totales']['impuesto']"/></td>
+                                        </t>
+                                        <t t-else="">
+                                            <td style="text-align:center;"><span>$ 0</span></td>    
+                                        </t>
                                         <td style="text-align:center; "><span t-esc="tipos[tipo]['totales']['valor_total_general']"/></td>
                                         <td></td>
                                     </tr>
@@ -103,7 +119,12 @@
                                 <td style="text-align:center; "><span t-esc="totales['cantidad']"/></td>
                                 <td style="text-align:center; "><span t-esc="totales['valor_unitario']"/></td>
                                 <td style="text-align:center;"><span t-esc="totales['valor_total']"/></td>
-                                <td style="text-align:center;"><span t-esc="totales['impuesto']"/></td>
+                                <t t-if="conImpuesto">
+                                    <td style="text-align:center;"><span t-esc="totales['impuesto']"/></td>
+                                </t>
+                                <t t-else="">
+                                    <td style="text-align:center;"><span>$ 0</span></td>    
+                                </t>
                                 <td style="text-align:center;"><span t-esc="totales['valor_total_general']"/></td>
                                 <td></td>
                             </tr>

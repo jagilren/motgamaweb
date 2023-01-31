@@ -96,12 +96,14 @@ class MotgamaConsumo(models.Model):
                     raise Warning('No se permiten consumos de valor $0.0')
                 else:
                     record.sudo().write({'vlrUnitario':record.valorUnitario})
-            if record.producto_id.type == 'consu':
-                raise Warning('No se puede cancelar orden de restaurante')
+            #if record.producto_id.type == 'consu':
+            #    raise Warning('No se puede cancelar orden de restaurante')
             ordenVenta = self.env['sale.order'].sudo().search(['&',('movimiento','=',record.movimiento_id.id),('state','=','sale')], limit=1)
             if not ordenVenta:
                 raise Warning('Esta habitación no registra consumos')
+
             vendidas = 0
+
             for line in ordenVenta.order_line:
                 if line.product_id.id == record.producto_id.product_variant_id.id:
                     vendidas += line.product_uom_qty

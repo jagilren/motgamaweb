@@ -15,8 +15,15 @@ class WizardAnomalia(models.TransientModel):
     @api.multi
     def registro_anomalia(self):
         self.ensure_one()
-        self.factura_id.sudo().write({
+        if self.factura_id.factura_anomalia:
+            self.factura_id.sudo().write({
+            'factura_anomalia': False,
+            'motivo_anomalia': False,
+            'fecha_anomalia': False
+            })
+        else:
+             self.factura_id.sudo().write({
             'factura_anomalia': True,
             'motivo_anomalia': self.motivo_anomalia,
             'fecha_anomalia': fields.Datetime().now()
-        })
+            })

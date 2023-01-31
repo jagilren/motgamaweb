@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <menuitem id="test_main_menu" name="FTP"/>
+        <menuitem id="test_main_menu" name="FTP CoSap"/>
 
         <menuitem id="test_sub_menu" name="Sub Menu" parent="test_main_menu"/>
 

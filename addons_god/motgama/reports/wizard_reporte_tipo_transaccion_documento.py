@@ -10,6 +10,7 @@ class WizardReporteTipoTrandcto(models.TransientModel):
     fecha_inicial = fields.Datetime(string='Fecha inicial', required=True)
     fecha_final = fields.Datetime(string='Fecha final', required=True)
     filtro_transaccion = fields.Many2many(string='Filtro Transacción', comodel_name='stock.picking.type')
+    conImpuesto = fields.Boolean(string="Con impuestos")
     
 
     @api.model
@@ -47,15 +48,24 @@ class WizardReporteTipoTrandcto(models.TransientModel):
                     'valor_unitario':move.product_id.standard_price,
                     'valor_total':move.quantity_done * move.product_id.standard_price,
                     'tipo_transaccion': picking.picking_type_id.name,
-                    'categoria':move.product_id.categ_id.name
+                    'categoria':move.product_id.categ_id.name,
+                    'conImpuesto':self.conImpuesto
                 }
                 if picking.picking_type_id.code != "internal":
-                    valores.update(
-                        {
-                        'impuesto_total':move.product_id.supplier_taxes_id.amount/100 * move.quantity_done * move.product_id.standard_price, 
-                        'valor_total_general': move.quantity_done * move.product_id.standard_price + move.product_id.supplier_taxes_id.amount/100 * move.quantity_done * move.product_id.standard_price, 
-                        }
-                    )
+                    if self.conImpuesto:
+                        valores.update(
+                            {
+                            'impuesto_total':move.product_id.supplier_taxes_id.amount/100 * move.quantity_done * move.product_id.standard_price, 
+                            'valor_total_general': move.quantity_done * move.product_id.standard_price + move.product_id.supplier_taxes_id.amount/100 * move.quantity_done * move.product_id.standard_price, 
+                            }
+                        )
+                    else:
+                        valores.update(
+                            {
+                            'impuesto_total':move.product_id.supplier_taxes_id.amount/100 * move.quantity_done * move.product_id.standard_price, 
+                            'valor_total_general': move.quantity_done * move.product_id.standard_price
+                            }
+                        )
                 else:
                     valores.update(
                         {
@@ -97,6 +107,7 @@ class WizardReporteTipoTrandcto(models.TransientModel):
         valor_total_general = fields.Monetary(string="Valor Total General")
         tipo_transaccion = fields.Char(string="Tipo Transacción")
         categoria = fields.Char(string="Categoría")
+        conImpuesto = fields.Boolean(string="Con impuesto")
 
 
     class PDFReporteTipoTrandcto(models.AbstractModel):
@@ -112,7 +123,8 @@ class WizardReporteTipoTrandcto(models.TransientModel):
                 'valor_unitario':0,
                 'valor_total':0,
                 'impuesto':0,
-                'valor_total_general':0
+                'valor_total_general':0,
+                'conImpuesto':docs[0].conImpuesto
             }
             for doc in docs:
                 if doc.tipo_transaccion in tipos:
@@ -196,6 +208,7 @@ class WizardReporteTipoTrandcto(models.TransientModel):
 
             return {
                     'tipos': tipos,
+                    'conImpuesto':totales['conImpuesto'],
                     'totales': totales,
                     'fecha_inicial':docs[0].fecha_inicial,
                     'fecha_final': docs[0].fecha_final,

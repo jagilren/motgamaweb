@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import Warning
+from datetime import datetime, timedelta
 
 class MotgamaWizardReporteDocumentos(models.TransientModel):
     _name = 'motgama.wizard.reportedocumentos'
@@ -43,11 +44,19 @@ class MotgamaWizardReporteDocumentos(models.TransientModel):
         for doc in reporte:
             doc.unlink()
         
+        fecha_inicial = self.fecha_inicial - timedelta(hours=5)
+        fecha_inicial_format = datetime(fecha_inicial.year,fecha_inicial.month,fecha_inicial.day,fecha_inicial.hour,fecha_inicial.minute, fecha_inicial.second)
+
+        fecha_final = self.fecha_final - timedelta(hours=5)
+        fecha_final_format = datetime(fecha_final.year,fecha_final.month,fecha_final.day,fecha_final.hour,fecha_final.minute, fecha_final.second)
+
+        
+        
         for doc in docs:
             valores = {
                 'tipo_reporte': self.tipo_reporte,
-                'fecha_inicial': self.fecha_inicial if self.fecha_inicial else False,
-                'fecha_final': self.fecha_final if self.fecha_final else False,
+                'fecha_inicial': fecha_inicial_format if fecha_inicial_format else False,
+                'fecha_final': fecha_final_format if fecha_final_format else False,
                 'doc_inicial': self.doc_inicial.name if self.doc_inicial else False,
                 'doc_final': self.doc_final.name if self.doc_final else False,
                 'fecha': doc.create_date,
@@ -124,11 +133,15 @@ class PDFReporteDocumentos(models.AbstractModel):
         for doc in docs:
             total += doc.valor
         
+        fecha = docs[0].fecha - timedelta(hours=5)
+        fecha_format = datetime(fecha.year,fecha.month,fecha.day,fecha.hour,fecha.minute, fecha.second)
+        
         return {
             'tipo_reporte': docs[0].tipo_reporte,
             'tipos_reporte': self.tipos_reporte,
             'company': self.env['res.company']._company_default_get('account.invoice'),
             'sucursal': self.env['motgama.sucursal'].search([],limit=1),
+            'fecha_comanda': fecha_format,
             'docs': docs,
             'count': count,
             'total': "{:0,.1f}".format(total).replace(',','¿').replace('.',',').replace('¿','.')

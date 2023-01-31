@@ -108,7 +108,7 @@ class GeneradorReportes(models.TransientModel):
         return bool(fecha < datetime.now() < fecha + timedelta(minutes=5))
 
     @api.model
-    def generar_nombre_reporte(self, fecha=datetime.now()):
+    def generar_nombre_reporte(self):
         fechaAct = datetime.now()
         nombre_report = str(fechaAct.year) + str(fechaAct.month) + str(fechaAct.day) + str(fechaAct.hour) + str(fechaAct.minute) + str(fechaAct.second)
         return nombre_report

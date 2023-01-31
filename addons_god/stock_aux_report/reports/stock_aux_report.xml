@@ -101,6 +101,12 @@
                     <h5 style="font-size: 10px;">Fecha inicial: <span t-field="docs[list(docs)[0]][0].fecha_inicial"/></h5>
                     <h5 style="font-size: 10px;">Fecha final: <span t-field="docs[list(docs)[0]][0].fecha_final"/></h5>
                     <h5 style="font-size: 10px;" t-if="docs[list(docs)[0]][0].genera_uid">Usuario que genera: <span t-field="docs[list(docs)[0]][0].genera_uid.name"/></h5>
+                    <t t-if="docs[list(docs)[0]][0].ubicaciones">
+                        <h5 style="font-size: 10px;">Ubicación: <span t-field="docs[list(docs)[0]][0].ubicaciones"/></h5>
+                    </t>
+                    <t t-else="">
+                        <h5 style="font-size: 10px;">Ubicación: Todos</h5>
+                    </t>
                     <br/>
                     <t t-foreach="docs" t-as="categoria">
                         <h5 style="font-size: 10px;"><span t-esc="categoria"/></h5>
@@ -113,6 +119,7 @@
                                 <th class="text-center" style="width: 14%">Salidas</th>
                                 <th class="text-center" style="width: 14%">Saldo actual</th>
                                 <th class="text-center" style="width: 15%">Valor actual</th>
+                                <th class="text-center" style="width:10%">Ubicación</th>
                             </thead>
                             <tbody>
                                 <t t-set="cat_inic" t-value="0"/>
@@ -150,6 +157,9 @@
                                             <span t-field="doc.valor_act"/>
                                             <t t-set="cat_act" t-value="cat_act + doc.valor_act"/>
                                         </td>
+                                        <td class="text-center">
+                                            <span t-field="doc.ubicacion"/>
+                                        </td>
                                     </tr>
                                 </t>
                                 <tr>
@@ -161,7 +171,7 @@
                                         <t t-set="tot_inic" t-value="tot_inic + cat_inic"/>
                                     </td>
                                     <td class="text-center">
-                                        $ <span t-esc="cat_ant"/>
+                                        $ <span t-esc="'{:0,.2f}'.format(cat_ant).replace(',','¿').replace('.',',').replace('¿','.')"/>
                                         <t t-set="tot_ant" t-value="tot_ant + cat_ant"/>
                                     </td>
                                     <td class="text-center">
@@ -177,7 +187,7 @@
                                         <t t-set="tot_tot" t-value="tot_tot + cat_tot"/>
                                     </td>
                                     <td class="text-center">
-                                        $ <span t-esc="cat_act"/>
+                                        $ <span t-esc="'{:0,.2f}'.format(cat_act).replace(',','¿').replace('.',',').replace('¿','.')"/>
                                         <t t-set="tot_act" t-value="tot_act + cat_act"/>
                                     </td>
                                 </tr>
@@ -204,7 +214,7 @@
                                     <span t-esc="tot_inic"/>
                                 </td>
                                 <td class="text-center">
-                                    $ <span t-esc="tot_ant"/>
+                                    $ <span t-esc="'{:0,.2f}'.format(tot_ant).replace(',','¿').replace('.',',').replace('¿','.')"/>
                                 </td>
                                 <td class="text-center">
                                     <span t-esc="tot_in"/>
@@ -216,7 +226,7 @@
                                     <span t-esc="tot_tot"/>
                                 </td>
                                 <td class="text-center">
-                                    $ <span t-esc="tot_act"/>
+                                    $ <span t-esc="'{:0,.2f}'.format(tot_act).replace(',','¿').replace('.',',').replace('¿','.')"/>
                                 </td>
                             </tr>
                         </tbody>
@@ -247,6 +257,12 @@
                     <h5 style="font-size: 10px;">Fecha inicial: <span t-field="docs[list(docs)[0]][0].fecha_inicial"/></h5>
                     <h5 style="font-size: 10px;">Fecha final: <span t-field="docs[list(docs)[0]][0].fecha_final"/></h5>
                     <h5 style="font-size: 10px;" t-if="docs[list(docs)[0]][0].genera_uid">Usuario que genera: <span t-field="docs[list(docs)[0]][0].genera_uid.name"/></h5>
+                    <t t-if="docs[list(docs)[0]][0].ubicaciones">
+                        <h5 style="font-size: 10px;">Ubicación: <span t-field="docs[list(docs)[0]][0].ubicaciones"/></h5>
+                    </t>
+                    <t t-else="">
+                        <h5 style="font-size: 10px;">Ubicación: Todos</h5>
+                    </t>
                     <br/>
                     <t t-foreach="docs" t-as="categoria">
                         <h5 style="font-size: 10px;"><span t-esc="categoria"/></h5>
@@ -256,9 +272,10 @@
                                 <th class="text-center" style="width: 14%">Saldo anterior</th>
                                 <th class="text-center" style="width: 14%">Valor anterior</th>
                                 <th class="text-center" style="width: 14%">Entradas</th>
-                                <th class="text-center" style="width: 14%">Salidas</th>
-                                <th class="text-center" style="width: 14%">Saldo actual</th>
-                                <th class="text-center" style="width: 15%">Valor actual</th>
+                                <th class="text-center" style="width: 13%">Salidas</th>
+                                <th class="text-center" style="width: 10%">Saldo actual</th>
+                                <th class="text-center" style="width: 10%">Valor actual</th>
+                                <th class="text-center" style="width: 10%">Ubicación</th>
                             </thead>
                             <tbody>
                                 <t t-set="cat_inic" t-value="0"/>
@@ -296,6 +313,9 @@
                                             <span t-field="doc.valor_act"/>
                                             <t t-set="cat_act" t-value="cat_act + doc.valor_act"/>
                                         </td>
+                                        <td class="text-center">
+                                            <span t-field="doc.ubicacion"/>
+                                        </td>
                                     </tr>
                                 </t>
                                 <tr>
@@ -307,7 +327,7 @@
                                         <t t-set="tot_inic" t-value="tot_inic + cat_inic"/>
                                     </td>
                                     <td class="text-center">
-                                        $ <span t-esc="cat_ant"/>
+                                        $ <span t-esc="'{:0,.2f}'.format(cat_ant).replace(',','¿').replace('.',',').replace('¿','.')"/>
                                         <t t-set="tot_ant" t-value="tot_ant + cat_ant"/>
                                     </td>
                                     <td class="text-center">
@@ -323,7 +343,7 @@
                                         <t t-set="tot_tot" t-value="tot_tot + cat_tot"/>
                                     </td>
                                     <td class="text-center">
-                                        $ <span t-esc="cat_act"/>
+                                        $ <span t-esc="'{:0,.2f}'.format(cat_act).replace(',','¿').replace('.',',').replace('¿','.')"/>
                                         <t t-set="tot_act" t-value="tot_act + cat_act"/>
                                     </td>
                                 </tr>
@@ -350,7 +370,7 @@
                                     <span t-esc="tot_inic"/>
                                 </td>
                                 <td class="text-center">
-                                    $ <span t-esc="tot_ant"/>
+                                    $ <span t-esc="'{:0,.2f}'.format(tot_ant).replace(',','¿').replace('.',',').replace('¿','.')"/>
                                 </td>
                                 <td class="text-center">
                                     <span t-esc="tot_in"/>
@@ -362,7 +382,7 @@
                                     <span t-esc="tot_tot"/>
                                 </td>
                                 <td class="text-center">
-                                    $ <span t-esc="tot_act"/>
+                                    $ <span t-esc="'{:0,.2f}'.format(tot_act).replace(',','¿').replace('.',',').replace('¿','.')"/>
                                 </td>
                             </tr>
                         </tbody>

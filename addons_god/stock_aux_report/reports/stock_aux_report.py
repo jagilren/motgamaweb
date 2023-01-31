@@ -1,4 +1,6 @@
 from odoo import models, fields, api
+import logging, os, shutil, base64
+_logger = logging.getLogger(__name__)
 
 class StockAuxReport(models.TransientModel):
     _name = 'stock_aux_report.stock_aux_report'
@@ -20,8 +22,11 @@ class StockAuxReport(models.TransientModel):
     product_out = fields.Float(string='Salidas')
     total = fields.Float(string='Saldo actual')
     valor_act = fields.Monetary(string='Valor actual')
+    ubicaciones = fields.Char(string='Ubicaciones')
 
     move_ids = fields.Many2many(string='Movimientos de inventario',comodel_name='stock.move')
+
+    
 
     @api.model
     def _get_currency(self):
@@ -42,6 +47,9 @@ class ReportStockAuxComplete(models.AbstractModel):
                 rep[doc.categoria].append(doc)
             else:
                 rep[doc.categoria] = [doc]
+
+        _logger.info("doc categoria")
+        _logger.info(rep[doc.categoria])
         
         return {
             'docs': rep,

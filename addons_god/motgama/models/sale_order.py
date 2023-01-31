@@ -20,3 +20,4 @@ class SaleOrderLine(models.Model):
     
     es_hospedaje = fields.Boolean(string="¿Es hospedaje?",default=False)
     base_line = fields.Many2one(string="Línea de base de descuento",comodel_name="sale.order.line")
+    desc_line_ids = fields.One2many(string = "descuentos", comodel_name="sale.order.line",inverse_name="base_line")

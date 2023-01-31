@@ -10,7 +10,7 @@ class StockAuxReportWizard(models.TransientModel):
 
     fecha_inicial = fields.Datetime(string='Fecha inicial',default=lambda self: self._get_inicial())
     fecha_final = fields.Datetime(string='Fecha final',default=lambda self: self._get_final())
-    ubicacion_id = fields.Many2one(comodel_name='stock.location',string='Ubicación')
+    ubicacion_id = fields.Many2many(comodel_name='stock.location',string='Ubicación')
     producto_ids = fields.Many2many(comodel_name='product.product',string='Productos')
 
     @api.model
@@ -31,8 +31,10 @@ class StockAuxReportWizard(models.TransientModel):
 
         fecha_inicial = self.fecha_inicial or datetime(2000,1,1)
         fecha_final = self.fecha_final or fields.Datetime().now()
+        ubicaciones = self.env['stock.location']
         if self.ubicacion_id:
-            ubicaciones = self.env['stock.location'].search([('id','child_of',[self.ubicacion_id.id])])
+            for ubicacion in self.ubicacion_id:
+                ubicaciones += self.env['stock.location'].search([('id','child_of',[ubicacion.id])])
         else:
             ubicaciones = self.env['stock.location'].search([('usage','=','internal')])
         if self.producto_ids:
@@ -98,6 +100,11 @@ class StockAuxReportWizard(models.TransientModel):
                     reporte_aux[transferencia.location_dest_id][transferencia.product_id]['initial'] = transferencia.product_qty
                 else:
                     reporte_aux[transferencia.location_dest_id][transferencia.product_id]['product_in'] = transferencia.product_qty
+        ubicaciones = ""
+        for ubicacion_id in self.ubicacion_id:
+            if ubicaciones != "":
+                ubicaciones +=  ", "
+            ubicaciones += ubicacion_id.name
 
         reporte = []
         for ubicacion in reporte_aux:
@@ -108,6 +115,7 @@ class StockAuxReportWizard(models.TransientModel):
                 total = initial + product_in - product_out
                 moves = reporte_aux[ubicacion][producto]['moves']
                 dic = {
+                    'ubicaciones':ubicaciones,
                     'fecha_inicial': self.fecha_inicial,
                     'fecha_final': self.fecha_final,
                     'genera_uid': self.env.user.id,
@@ -124,6 +132,8 @@ class StockAuxReportWizard(models.TransientModel):
                 }
                 reporte.append(dic)
         
+
+
         for linea in reporte:
             nuevo = self.env['stock_aux_report.stock_aux_report'].create(linea)
             if not nuevo:

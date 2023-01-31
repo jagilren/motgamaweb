@@ -108,4 +108,24 @@
             </t>
         </t>
     </template>
+    <record id="view_saldos_category" model="ir.ui.view">
+        <field name="name">view_saldos_category</field>
+        <field name="model">stock.quant</field>
+        <field name="inherit_id" ref="stock.view_stock_quant_tree"/>
+        <field name="arch" type="xml">
+            <field name="location_id" position="after">
+                <field name="category"/>
+            </field>
+        </field>
+    </record>
+    <record id="group_by_saldos_category" model="ir.ui.view">
+        <field name="name">group_by_saldos_category</field>
+        <field name="model">stock.quant</field>
+        <field name="inherit_id" ref="stock.quant_search_view"/>
+        <field name="arch" type="xml">
+            <filter name="locationgroup" position="after">
+                <filter string="Categoría" name="categorygroup" domain="[]" context="{'group_by': 'category'}"/>
+            </filter>
+        </field>
+    </record>
 </odoo>

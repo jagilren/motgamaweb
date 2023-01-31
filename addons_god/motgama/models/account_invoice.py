@@ -55,6 +55,7 @@ class Invoice(models.Model):
                 raise Warning('No tiene permitido registrar facturas o notas crédito de proveedor')
         return super().create(values)
     
+
     @api.one
     def copy(self,default=None):
         if not self.env.ref('motgama.motgama_duplicar_factura') in self.env.user.permisos:

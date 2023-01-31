@@ -52,7 +52,7 @@
                                             <span style="text-align: center;" t-field="doc.recepcion"/>
                                         </td>
                                         <td style="text-align: center;" class="text-center">
-                                            <span style="text-align: center;" t-field="doc.fecha"/>
+                                            <span style="text-align: center;" t-esc="fecha"/>
                                         </td>
                                         <td style="text-align: center;" class="text-center">
                                             <span  style="text-align: center;" t-field="doc.habitacion"/>

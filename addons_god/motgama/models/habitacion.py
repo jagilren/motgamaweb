@@ -45,21 +45,20 @@ class MotgamaHabitacion(models.Model):#ok
         flujo = self.env['motgama.flujohabitacion'].search([('codigo','=',self.codigo)])
         if not flujo:
             flujo = self.env['motgama.flujohabitacion'].search([('codigo','=',self.codigo),('active','=',False)])
-        _logger.info("por acá paso habitacion")
-        _logger.info(values['active'])
-        _logger.info(flujo)
+        super().write(values)
         if 'tipo_id' in values:
             values['tipo'] = values['tipo_id']
         if 'tema_id' in values:
             values['tema'] = values['tema_id']
-        super().write(values)
+        if 'zona_id' in values:
+            values['recepcion'] = self.zona_id.recepcion_id.id
         flujo.write(values)
         return True
 
     @api.multi
     def unlink(self):
         for record in self:
-            flujo = self.env['motgama.flujohabitacion'].search([('codigo','=',record.codigo)])
+            flujo = self.env['motgama.flujohabitacion'].search([('codigo','=',record.codigo),('active','=',False)])
             flujo.unlink()
             return super().unlink()
 

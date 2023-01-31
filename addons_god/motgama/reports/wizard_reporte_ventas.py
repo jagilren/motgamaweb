@@ -309,6 +309,9 @@ class PDFReporteVentas(models.AbstractModel):
         _logger.info("Variables docs" + str(facs))
         terminal = socket.gethostname()
         fecha_generacion=datetime.now() - timedelta(hours=5)
+        fecha_generacion_format = datetime(fecha_generacion.year,fecha_generacion.month,fecha_generacion.day,fecha_generacion.hour,fecha_generacion.minute, fecha_generacion.second)
+
+
         alias_impuesto = {
 
         }
@@ -337,7 +340,7 @@ class PDFReporteVentas(models.AbstractModel):
             'valor_impuestos_total': valor_impuestos_total,
             'total_impuestos_base':total_impuestos_base,
             'terminal': terminal,
-            'fecha_generacion':fecha_generacion,
+            'fecha_generacion':fecha_generacion_format,
             'facs':facs,
             'numero_reporte': docs[0].numero_reporte,
             'primer_factura': primer_factura,

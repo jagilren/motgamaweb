@@ -23,8 +23,6 @@
                             <th style="width:5%; padding:2.5px; text-align:center;">Cantidad</th>
                             <th style="width:15%; padding:2.5px; text-align:center;">Valor Unitario</th>
                             <th style="width:15%; padding:2.5px; text-align:center;">Valor Total</th>
-                            <th style="width:10%; padding:2.5px; text-align:center;">Impuesto Total</th>
-                            <th style="width:15%; padding:2.5px; text-align:center;">Valor Total</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -34,8 +32,6 @@
                                 <tr>
                                     <td colspan="2"><h5 style="font-size:12px; font-weight:bold;">Tipo de Transacción:</h5></td>
                                     <td colspan="2"><h5 style="font-size:12px; font-weight:bold;"><span t-esc="tipo"></span></h5></td>
-                                    <td></td>
-                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -53,8 +49,6 @@
                                         <td style="text-align:center; "><span t-field="doc.cantidad"></span></td>
                                         <td style="text-align:center;"><span t-field="doc.valor_unitario"></span></td>
                                         <td style="text-align:center;"><span t-field="doc.valor_total"></span></td>
-                                        <td style="text-align:center;"><span t-field="doc.impuesto_total"></span></td>
-                                        <td style="text-align:center;"><span t-field="doc.valor_total_general"></span></td>
                                         </tr>
                                     </t>
                                 </t>
@@ -70,8 +64,6 @@
                                         <td style="text-align:center; padding:0px;"><span t-esc="tipos[tipo]['categorias'][categoria]['cantidad']"/></td>
                                         <td style="text-align:center;  padding:0px;"><span t-esc="tipos[tipo]['categorias'][categoria]['valor_unitario']"/></td>
                                         <td style="text-align:center;  padding:0px;"><span t-esc="tipos[tipo]['categorias'][categoria]['valor_total']"/></td>
-                                        <td style="text-align:center;  padding:0px;"><span t-esc="tipos[tipo]['categorias'][categoria]['impuesto']"/></td>
-                                        <td style="text-align:center;  padding:0px;"><span t-esc="tipos[tipo]['categorias'][categoria]['valor_total_general']"/></td>
                                     </tr>
                                 </t>
                              
@@ -85,8 +77,6 @@
                                     <td style="text-align:center;"><span t-esc="tipos[tipo]['totales']['cantidad']"/></td>
                                     <td style="text-align:center;"><span t-esc="tipos[tipo]['totales']['valor_unitario']"/></td>
                                     <td style="text-align:center; "><span t-esc="tipos[tipo]['totales']['valor_total']"/></td>
-                                    <td style="text-align:center;"><span t-esc="tipos[tipo]['totales']['impuesto']"/></td>
-                                    <td style="text-align:center; "><span t-esc="tipos[tipo]['totales']['valor_total_general']"/></td>
                                 </tr>
                             </t>
                             <tr>
@@ -99,8 +89,6 @@
                                 <td style="text-align:center; "><span t-esc="totales['cantidad']"/></td>
                                 <td style="text-align:center; "><span t-esc="totales['valor_unitario']"/></td>
                                 <td style="text-align:center;"><span t-esc="totales['valor_total']"/></td>
-                                <td style="text-align:center;"><span t-esc="totales['impuesto']"/></td>
-                                <td style="text-align:center;"><span t-esc="totales['valor_total_general']"/></td>
                             </tr>
                             <tr>
                                 <td colspan="9"><hr></hr></td>

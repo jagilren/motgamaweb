@@ -64,10 +64,11 @@ class appHV(models.Model):
 
     def conect_server_ftp(self):
         ftp = self.ssl_true()
+        ftp.set_pasv(False)
         try:
             ftp.connect(self.server, self.puerto)
         except (socket.error, socket.gaierror)as e:
-            self.resultado = 'Error al encontrar el servidor'
+            self.resultado = 'Error al encontrar el servidor' + str(e)
         else:
             try:
                 ftp.login(self.user, self.pass_user)

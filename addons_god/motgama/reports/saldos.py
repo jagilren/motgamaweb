@@ -35,6 +35,7 @@ class StockQuant(models.Model):
     _inherit = 'stock.quant'
 
     fecha_reporte = fields.Datetime(string="Fecha de reporte")
+    category = fields.Many2one(string="Categoría", comodel_name="product.category", related="product_id.categ_id", store=True)
 
 class StockQuantHistory(models.TransientModel):
     _inherit = 'stock.quantity.history'

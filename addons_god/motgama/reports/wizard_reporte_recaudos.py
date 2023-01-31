@@ -181,15 +181,26 @@ class PDFReporteRecaudos(models.AbstractModel):
         for medio in mediosPago:
             mediosPago[medio] = "{:0,.2f}".format(mediosPago[medio]).replace(',','¿').replace('.',',').replace('¿','.')
         total = "$ " + "{:0,.2f}".format(total).replace(',','¿').replace('.',',').replace('¿','.')
+
+        fecha_inicial = docs[0].fecha_inicial - timedelta(hours=5)
+        fecha_inicial_format = datetime(fecha_inicial.year,fecha_inicial.month,fecha_inicial.day,fecha_inicial.hour,fecha_inicial.minute, fecha_inicial.second)
+
+        fecha_final = docs[0].fecha_final - timedelta(hours=5)
+        fecha_final_format = datetime(fecha_final.year,fecha_final.month,fecha_final.day,fecha_final.hour,fecha_final.minute, fecha_final.second)
         
         fecha_generacion=datetime.now() - timedelta(hours=5)
+        fecha_generacion_format = datetime(fecha_generacion.year,fecha_generacion.month,fecha_generacion.day,fecha_generacion.hour,fecha_generacion.minute, fecha_generacion.second)
+
+        fecha = docs[0].fecha - timedelta(hours=5)
+        fecha_format = datetime(fecha.year,fecha.month,fecha.day,fecha.hour,fecha.minute, fecha.second)
 
         return {
             'sucursal': self.env['motgama.sucursal'].search([],limit=1),
             'company': docs[0].company,
-            'fecha_inicial': docs[0].fecha_inicial,
-            'fecha_final': docs[0].fecha_final,
-            'fecha_generacion':fecha_generacion,
+            'fecha_inicial': fecha_inicial_format,
+            'fecha_final': fecha_final_format,
+            'fecha_generacion':fecha_generacion_format,
+            'fecha':fecha_format,
             'docs': docs,
             'tipos': tiposRecaudo,
             'medios': mediosPago,
